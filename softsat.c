@@ -27,11 +27,11 @@ int main(int argc, char *argv[])
 	}
 
 	/* check options */
-	range     = CLAMP(-2.0f, range, 2.0f);
-	gradation = CLAMP(0.0f, gradation, 1.0f);
+	range     = CLAMP(0.01f, range, 2.0f);
+	gradation = CLAMP(0.0f, gradation, 0.99f);
 
 	/* convert options */
-	range /= 0.75f;
+	range /= (gradation + 1) / 2; /* 0.75f for the default 0.5f */
 
 	softsat(range, gradation);
 	return 0;
