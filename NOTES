@@ -1,0 +1,11 @@
+Internally these programs use floats.
+
+unfmt converts a raw waveform using integer samples to float, and fmt does the
+reverse. They may only work on little-endian machines for the time being.
+
+softsat is a really good limiter that combined with amp can be used for
+mastering purposes. Everything else is just a toy. Example usage:
+
+unfmt -16 <mysong.raw | amp -vol 2.0 | softsat | fmt -16 >mastered.raw
+
+This code is in the public domain.
