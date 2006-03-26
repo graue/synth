@@ -63,9 +63,9 @@ static void mix(FILE **inputs, int numfiles)
 
 	memset(filedone, 0, numfiles * sizeof (int));
 
-	fw = (char*) &f;
+	fw = (char *)&f;
 
-	while (1)
+	for (;;)
 	{
 		float sum = 0.0f;
 
@@ -74,7 +74,7 @@ static void mix(FILE **inputs, int numfiles)
 			if (filedone[i])
 				continue;
 
-			for (j = 0; j < (int) sizeof (float); j++)
+			for (j = 0; j < (int)sizeof (float); j++)
 			{
 				c = getc(inputs[i]);
 				if (c == EOF)
@@ -97,7 +97,7 @@ static void mix(FILE **inputs, int numfiles)
 		}
 
 		f = sum;
-		for (j = 0; j < (int) sizeof (float); j++)
+		for (j = 0; j < (int)sizeof (float); j++)
 			putchar(fw[j]);
 	}
 }

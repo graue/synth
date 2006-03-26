@@ -49,23 +49,23 @@ static void conv_u8(void)
 	char *fw;
 	int c, i;
 
-	fw = (char*) &f;
+	fw = (char *)&f;
 
-	while (1)
+	for (;;)
 	{
 		c = getchar();
 		if (c == EOF)
 			return;
-		s = (unsigned char) c;
+		s = (unsigned char)c;
 		f = s;
 
-		/* move range of samples from 0 .. 255 to -128 .. 127 */
+		/* move range from 0 .. 255 to -128 .. 127 */
 		f -= 128.0f;
 
-		/* expand range of samples from -128 .. 127 to -32768 .. 32767 */
+		/* expand range from -128 .. 127 to -32768 .. 32767 */
 		f *= 256.0f;
 
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fw[i]);
 	}
 }
@@ -77,20 +77,20 @@ static void conv_s8(void)
 	char *fw;
 	int c, i;
 
-	fw = (char*) &f;
+	fw = (char *)&f;
 
-	while (1)
+	for (;;)
 	{
 		c = getchar();
 		if (c == EOF)
 			return;
-		s = (signed char) c;
+		s = (signed char)c;
 		f = s;
 
-		/* expand range of samples from -128 .. 127 to -32768 .. 32767 */
+		/* expand range from -128 .. 127 to -32768 .. 32767 */
 		f *= 256.0f;
 
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fw[i]);
 	}
 }
@@ -103,10 +103,10 @@ static void conv_16(void)
 	char *sr;
 	int c, i;
 
-	fw = (char*) &f;
-	sr = (char*) &s;
+	fw = (char *)&f;
+	sr = (char *)&s;
 
-	while (1)
+	for (;;)
 	{
 		c = getchar();
 		if (c == EOF)
@@ -119,7 +119,7 @@ static void conv_16(void)
 
 		f = s;
 
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fw[i]);
 	}
 }
@@ -133,10 +133,10 @@ static void conv_24(void)
 	char *sr;
 	int c, i;
 
-	fw = (char*) &f;
-	sr = (char*) &s;
+	fw = (char *)&f;
+	sr = (char *)&s;
 
-	while (1)
+	for (;;)
 	{
 		c = getchar();
 		if (c == EOF)
@@ -155,15 +155,15 @@ static void conv_24(void)
 		else
 			sr[3] = 0;
 
-		d = (double) s;
+		d = (double)s;
 
 		/* squish range of samples from -8388608 .. 8388607
 		   to -32768 .. 32767 */
 		d /= 256.0f;
 
-		f = (float) d;
+		f = (float)d;
 
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fw[i]);
 	}
 }
@@ -177,10 +177,10 @@ static void conv_32(void)
 	char *sr;
 	int c, i;
 
-	fw = (char*) &f;
-	sr = (char*) &s;
+	fw = (char *)&f;
+	sr = (char *)&s;
 
-	while (1)
+	for (;;)
 	{
 		c = getchar();
 		if (c == EOF)
@@ -199,15 +199,15 @@ static void conv_32(void)
 			return;
 		sr[3] = c;
 
-		d = (double) s;
+		d = (double)s;
 
 		/* squish range of samples from -2147483648 .. 2147483647
 		   to -32768 .. 32767 */
 		d /= 32768.0f;
 
-		f = (float) d;
+		f = (float)d;
 
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fw[i]);
 	}
 }

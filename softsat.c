@@ -44,13 +44,13 @@ static void softsat(float range, float gradation)
 	char *fw;
 	int c, i;
 
-	fw = (char*) &f;
+	fw = (char *)&f;
 	gradinv = 1.0f/gradation;
 	range *= 32768.0f;
 
-	while (1)
+	for (;;)
 	{
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 		{
 			c = getchar();
 			if (c == EOF)
@@ -87,7 +87,7 @@ static void softsat(float range, float gradation)
 
 		f *= range;
 
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fw[i]);
 	}
 }

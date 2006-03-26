@@ -59,16 +59,16 @@ int main(int argc, char *argv[])
 	for (n = 0; n < len; n++)
 	{
 		float f;
-		char *fr = (char*) &f;
+		char *fr = (char *)&f;
 
 		f = triangle((n + phase) * 360.0f / period) * amp;
 
 		/* left channel */
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fr[i]);
 
 		/* right channel */
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fr[i]);
 	}
 

@@ -45,22 +45,22 @@ static void conv_u8(void)
 	char *fw;
 	int c, i;
 
-	fw = (char*) &f;
+	fw = (char *)&f;
 
-	while (1)
+	for (;;)
 	{
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 		{
 			c = getchar();
 			if (c == EOF)
 				return;
-			fw[i] = (char) c;
+			fw[i] = (char)c;
 		}
 
-		/* squish range of samples from -32768 .. 32767 to -128 .. 127 */
+		/* squish range from -32768 .. 32767 to -128 .. 127 */
 		f /= 256.0f;
 
-		/* move range of samples from -128 .. 127 to 0 .. 255 */
+		/* move range from -128 .. 127 to 0 .. 255 */
 		f += 128.0f;
 
 		/* clip */
@@ -69,8 +69,8 @@ static void conv_u8(void)
 		else if (f > 255.0f)
 			f = 255.0f;
 
-		s = (unsigned char) f;
-		putchar((char) s);
+		s = (unsigned char)f;
+		putchar((char)s);
 	}
 }
 
@@ -81,19 +81,19 @@ static void conv_s8(void)
 	char *fw;
 	int c, i;
 
-	fw = (char*) &f;
+	fw = (char *)&f;
 
-	while (1)
+	for (;;)
 	{
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 		{
 			c = getchar();
 			if (c == EOF)
 				return;
-			fw[i] = (char) c;
+			fw[i] = (char)c;
 		}
 
-		/* squish range of samples from -32768 .. 32767 to -128 .. 127 */
+		/* squish range from -32768 .. 32767 to -128 .. 127 */
 		f /= 256.0f;
 
 		/* clip */
@@ -102,8 +102,8 @@ static void conv_s8(void)
 		else if (f > 127.0f)
 			f = 127.0f;
 
-		s = (signed char) f;
-		putchar((char) s);
+		s = (signed char)f;
+		putchar((char)s);
 	}
 }
 
@@ -115,17 +115,17 @@ static void conv_16(void)
 	char *sr;
 	int c, i;
 
-	fw = (char*) &f;
-	sr = (char*) &s;
+	fw = (char *)&f;
+	sr = (char *)&s;
 
-	while (1)
+	for (;;)
 	{
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 		{
 			c = getchar();
 			if (c == EOF)
 				return;
-			fw[i] = (char) c;
+			fw[i] = (char)c;
 		}
 
 		/* clip */
@@ -134,7 +134,7 @@ static void conv_16(void)
 		else if (f > 32767.0f)
 			f = 32767.0f;
 
-		s = (short) f;
+		s = (short)f;
 		putchar(sr[0]);
 		putchar(sr[1]);
 	}
@@ -149,17 +149,17 @@ static void conv_32(void)
 	char *sr;
 	int c, i;
 
-	fw = (char*) &f;
-	sr = (char*) &s;
+	fw = (char *)&f;
+	sr = (char *)&s;
 
-	while (1)
+	for (;;)
 	{
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 		{
 			c = getchar();
 			if (c == EOF)
 				return;
-			fw[i] = (char) c;
+			fw[i] = (char)c;
 		}
 
 		/* clip */
@@ -170,11 +170,13 @@ static void conv_32(void)
 
 		d = f;
 
-		/* expand range of samples from -32768 .. 32767
-		   to -2147483648 .. 2147483647 */
+		/*
+		 * Expand range of samples from -32768 .. 32767
+		 * to -2147483648 .. 2147483647.
+		 */
 		d *= 32768.0f;
 
-		s = (int) d;
+		s = (int)d;
 		putchar(sr[0]);
 		putchar(sr[1]);
 		putchar(sr[2]);

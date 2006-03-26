@@ -30,11 +30,11 @@ static void clip(float max, float min)
 	char *fw;
 	int c, i;
 
-	fw = (char*) &f;
+	fw = (char *)&f;
 
-	while (1)
+	for (;;)
 	{
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 		{
 			c = getchar();
 			if (c == EOF)
@@ -44,7 +44,7 @@ static void clip(float max, float min)
 
 		f = CLAMP(min, f, max);
 
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fw[i]);
 	}
 }

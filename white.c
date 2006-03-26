@@ -40,17 +40,16 @@ int main(int argc, char *argv[])
 	for (n = 0; n < len; n++)
 	{
 		float f;
-		char *fr = (char*) &f;
-
+		char *fr = (char *)&f;
 
 		/* left channel */
-		f = ((float) rand()) / RAND_MAX * range - amp;
-		for (i = 0; i < (int) sizeof (float); i++)
+		f = ((float)rand()) / RAND_MAX * range - amp;
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fr[i]);
 
 		/* right channel */
-		f = ((float) rand()) / RAND_MAX * range - amp;
-		for (i = 0; i < (int) sizeof (float); i++)
+		f = ((float)rand()) / RAND_MAX * range - amp;
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fr[i]);
 	}
 

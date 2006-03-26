@@ -49,13 +49,13 @@ static void pan(float angle)
 	leftamp  = cos(angle) + sin(angle);
 	rightamp = cos(angle) - sin(angle);
 
-	fw = (char*) &f;
+	fw = (char *)&f;
 
-	while (1)
+	for (;;)
 	{
 		odd = !odd;
 
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 		{
 			c = getchar();
 			if (c == EOF)
@@ -68,7 +68,7 @@ static void pan(float angle)
 		else     /* right speaker */
 			f *= rightamp;
 
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fw[i]);
 	}
 }

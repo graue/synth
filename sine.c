@@ -52,16 +52,16 @@ int main(int argc, char *argv[])
 	for (n = 0; n < len; n++)
 	{
 		float f;
-		char *fr = (char*) &f;
+		char *fr = (char *)&f;
 
 		f = sin((n + phase) * 2*PI / period) * amp;
 
 		/* left channel */
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fr[i]);
 
 		/* right channel */
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fr[i]);
 	}
 

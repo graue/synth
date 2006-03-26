@@ -33,11 +33,11 @@ static void amp(float volume)
 	char *fw;
 	int c, i;
 
-	fw = (char*) &f;
+	fw = (char *)&f;
 
-	while (1)
+	for (;;)
 	{
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 		{
 			c = getchar();
 			if (c == EOF)
@@ -47,7 +47,7 @@ static void amp(float volume)
 
 		f *= volume;
 
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fw[i]);
 	}
 }

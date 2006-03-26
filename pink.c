@@ -23,17 +23,17 @@ static void pink(void)
 	char *fw;
 	int c, i, left = 0;
 
-	fw = (char*) &f;
+	fw = (char *)&f;
 	for (i = 0; i < 14; i++)
 		b[i] = 0.0f;
 
-	while (1)
+	for (;;)
 	{
 		int o;
 		left = !left;
 		o = left ? 7 : 0;
 
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 		{
 			c = getchar();
 			if (c == EOF)
@@ -54,7 +54,7 @@ static void pink(void)
 		b[6+o] = white * 0.115926;
 
 		f = pink;
-		for (i = 0; i < (int) sizeof (float); i++)
+		for (i = 0; i < (int)sizeof (float); i++)
 			putchar(fw[i]);
 	}
 }
