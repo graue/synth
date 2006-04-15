@@ -19,8 +19,11 @@ int main(int argc, char *argv[])
 	SET_BINARY_MODE
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-amp") && ++i < argc)
-			max = atof(argv[i]) * 32768.0f;
+		if (!strcmp(argv[i], "-amp"))
+		{
+			if (++i < argc)
+				max = atof(argv[i]) * 32768.0f;
+		}
 		else if (argv[i][0] != '-')
 		{
 			if (numfiles == MAXINPUTS)
