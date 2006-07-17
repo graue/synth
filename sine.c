@@ -3,12 +3,9 @@
 #include <string.h>
 #include <math.h>
 #include "binary.h"
+#include "defs.h"
 
 /* sine: generate a sine wave */
-
-#ifndef RATE
-#define RATE 88200
-#endif
 
 #ifndef PI
 #define PI 3.1415927f

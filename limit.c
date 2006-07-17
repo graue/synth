@@ -3,12 +3,9 @@
 #include <string.h>
 #include <math.h>
 #include "binary.h"
+#include "defs.h"
 
 /* limit.c: limit a waveform's dynamic range, roughly */
-
-#ifndef RATE
-#define RATE 88200
-#endif
 
 #define ATTACK  (RATE * 10/1000)
 #define RELEASE (RATE * 30/1000)

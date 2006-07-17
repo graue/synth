@@ -3,12 +3,9 @@
 #include <string.h>
 #include <time.h>
 #include "binary.h"
+#include "defs.h"
 
 /* white: generate white noise */
-
-#ifndef RATE
-#define RATE 88200
-#endif
 
 #define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 

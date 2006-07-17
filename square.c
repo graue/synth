@@ -3,12 +3,9 @@
 #include <string.h>
 #include <math.h>
 #include "binary.h"
+#include "defs.h"
 
 /* square: generate a square wave */
-
-#ifndef RATE
-#define RATE 88200
-#endif
 
 #define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 
