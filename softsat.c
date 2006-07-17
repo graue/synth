@@ -37,6 +37,16 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
+#define SHAPE							\
+	if (f > gradation)					\
+	{							\
+		f = gradation + (f-gradation)			\
+			/ (1+((f-gradation)/(1-gradation))	\
+			   * ((f-gradation)/(1-gradation)));	\
+	}							\
+	if (f > 1)						\
+		f = (gradation + 1) / 2;
+
 static void softsat(float range, float gradation)
 {
 	float f;
@@ -62,26 +72,12 @@ static void softsat(float range, float gradation)
 
 		if (f > 0.0f)
 		{
-			if (f > gradation)
-			{
-				f = gradation + (f-gradation)
-					/ (1+((f-gradation)/(1-gradation))
-					   * ((f-gradation)/(1-gradation)));
-			}
-			if (f > 1)
-				f = (gradation + 1) / 2;
+			SHAPE
 		}
 		else
 		{
 			f = -f;
-			if (f > gradation)
-			{
-				f = gradation + (f-gradation)
-					/ (1+((f-gradation)/(1-gradation))
-					   * ((f-gradation)/(1-gradation)));
-			}
-			if (f > 1)
-				f = (gradation + 1) / 2;
+			SHAPE
 			f = -f;
 		}
 
