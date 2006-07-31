@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 			vol = atof(argv[i]);
 	}
 
-	vol = CLAMP(0.0f, vol, 10.0f);
+	vol = CLAMP(0.0f, vol, 100.0f);
 
 	amp(vol);
 	return 0;
