@@ -237,13 +237,16 @@ static void filter(const biquadcoeffs_t *coeffs)
 {
 	float f;
 	int o = 0; /* o = odd */
-	float b0, b1, b2, a0, a1, a2;
 	float x[2][3] = {{0, 0, 0}, {0, 0, 0}};
 	float y[2][3] = {{0, 0, 0}, {0, 0, 0}};
+	float c1, c2, c3, c4, c5;
 	const int n = 2;
 
-	b0 = coeffs->b0, b1 = coeffs->b1, b2 = coeffs->b2;
-	a0 = coeffs->a0, a1 = coeffs->a1, a2 = coeffs->a2;
+	c1 = coeffs->b0 / coeffs->a0;
+	c2 = coeffs->b1 / coeffs->a0;
+	c3 = coeffs->b2 / coeffs->a0;
+	c4 = coeffs->a1 / coeffs->a0;
+	c5 = coeffs->a2 / coeffs->a0;
 
 	for (;;)
 	{
@@ -256,8 +259,8 @@ static void filter(const biquadcoeffs_t *coeffs)
 		x[o][n] = f;
 		y[o][n-2] = y[o][n-1];
 		y[o][n-1] = y[o][n];
-		y[o][n] = (b0/a0)*x[o][n] + (b1/a0)*x[o][n-1] + (b2/a0)*x[o][n-2]
-		                          - (a1/a0)*y[o][n-1] - (a2/a0)*y[o][n-2];
+		y[o][n] = c1*x[o][n] + c2*x[o][n-1] + c3*x[o][n-2]
+		                     - c4*y[o][n-1] - c5*y[o][n-2];
 
 		f = y[o][n];
 
