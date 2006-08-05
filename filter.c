@@ -5,7 +5,7 @@
 #include "binary.h"
 #include "defs.h"
 
-/* filter.c: highpass, lowpass, or other filter */
+/* filter.c: highpass, lowpass, or other IIR filter */
 
 #define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 
