@@ -20,10 +20,9 @@ static void pink(void)
 	float f;
 	float b[14];
 	float white, pink;
-	char *fw;
-	int c, i, left = 0;
+	int left = 0;
+	int i;
 
-	fw = (char *)&f;
 	for (i = 0; i < 14; i++)
 		b[i] = 0.0f;
 
@@ -33,13 +32,8 @@ static void pink(void)
 		left = !left;
 		o = left ? 7 : 0;
 
-		for (i = 0; i < (int)sizeof (float); i++)
-		{
-			c = getchar();
-			if (c == EOF)
-				return;
-			fw[i] = c;
-		}
+		if (fread(&f, sizeof f, 1, stdin) < 1)
+			return;
 
 		white = f;
 
@@ -54,7 +48,7 @@ static void pink(void)
 		b[6+o] = white * 0.115926;
 
 		f = pink;
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fw[i]);
+		if (fwrite(&f, sizeof f, 1, stdout) < 1)
+			return;
 	}
 }

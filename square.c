@@ -53,17 +53,16 @@ int main(int argc, char *argv[])
 	for (n = 0; n < len; n++)
 	{
 		float f;
-		char *fr = (char *)&f;
 
 		f = square((n + phase) * 360.0f / period) * amp;
 
 		/* left channel */
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fr[i]);
+		if (fwrite(&f, sizeof f, 1, stdout) < 1)
+			break;
 
 		/* right channel */
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fr[i]);
+		if (fwrite(&f, sizeof f, 1, stdout) < 1)
+			break;
 	}
 
 	return 0;

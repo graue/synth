@@ -38,22 +38,14 @@ static void softclip(float range, float gradation)
 {
 	float f;
 	float gradinv;
-	char *fw;
-	int c, i;
 
-	fw = (char *)&f;
 	gradinv = 1.0f/gradation;
 	range *= 32768.0f;
 
 	for (;;)
 	{
-		for (i = 0; i < (int)sizeof (float); i++)
-		{
-			c = getchar();
-			if (c == EOF)
-				return;
-			fw[i] = c;
-		}
+		if (fread(&f, sizeof f, 1, stdin) < 1)
+			return;
 
 		f /= range;
 
@@ -61,7 +53,7 @@ static void softclip(float range, float gradation)
 
 		f *= range;
 
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fw[i]);
+		if (fwrite(&f, sizeof f, 1, stdout) < 1)
+			return;
 	}
 }

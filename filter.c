@@ -236,27 +236,19 @@ static void computecoeffs(biquadcoeffs_t *co, int type, int usewhich,
 static void filter(const biquadcoeffs_t *coeffs)
 {
 	float f;
-	char *fw;
-	int c, i, o = 0; /* o = odd */
+	int o = 0; /* o = odd */
 	float b0, b1, b2, a0, a1, a2;
 	float x[2][3] = {{0, 0, 0}, {0, 0, 0}};
 	float y[2][3] = {{0, 0, 0}, {0, 0, 0}};
 	const int n = 2;
-
-	fw = (char *)&f;
 
 	b0 = coeffs->b0, b1 = coeffs->b1, b2 = coeffs->b2;
 	a0 = coeffs->a0, a1 = coeffs->a1, a2 = coeffs->a2;
 
 	for (;;)
 	{
-		for (i = 0; i < (int)sizeof (float); i++)
-		{
-			c = getchar();
-			if (c == EOF)
-				return;
-			fw[i] = c;
-		}
+		if (fread(&f, sizeof f, 1, stdin) < 1)
+			return;
 
 		o = !o;
 		x[o][n-2] = x[o][n-1];
@@ -269,7 +261,7 @@ static void filter(const biquadcoeffs_t *coeffs)
 
 		f = y[o][n];
 
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fw[i]);
+		if (fwrite(&f, sizeof f, 1, stdout) < 1)
+			return;
 	}
 }

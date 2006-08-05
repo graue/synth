@@ -43,32 +43,24 @@ static void pan(float angle)
 {
 	float f;
 	float leftamp, rightamp;
-	char *fw;
-	int c, i, odd = 0;
+	int odd = 0;
 
 	leftamp  = cos(angle) + sin(angle);
 	rightamp = cos(angle) - sin(angle);
-
-	fw = (char *)&f;
 
 	for (;;)
 	{
 		odd = !odd;
 
-		for (i = 0; i < (int)sizeof (float); i++)
-		{
-			c = getchar();
-			if (c == EOF)
-				return;
-			fw[i] = c;
-		}
+		if (fread(&f, sizeof f, 1, stdin) < 1)
+			return;
 
 		if (odd) /* left speaker */
 			f *= leftamp;
 		else     /* right speaker */
 			f *= rightamp;
 
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fw[i]);
+		if (fwrite(&f, sizeof f, 1, stdout) < 1)
+			return;
 	}
 }

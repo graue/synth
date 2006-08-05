@@ -34,20 +34,13 @@ int main(int argc, char *argv[])
 	amp *= 32768.0f;
 	range = amp * 2;
 
-	for (n = 0; n < len; n++)
+	for (n = 0; n < len*2; n++)
 	{
 		float f;
-		char *fr = (char *)&f;
 
-		/* left channel */
 		f = ((float)rand()) / RAND_MAX * range - amp;
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fr[i]);
-
-		/* right channel */
-		f = ((float)rand()) / RAND_MAX * range - amp;
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fr[i]);
+		if (fwrite(&f, sizeof f, 1, stdout) < 1)
+			break;
 	}
 
 	return 0;

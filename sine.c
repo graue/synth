@@ -49,17 +49,16 @@ int main(int argc, char *argv[])
 	for (n = 0; n < len; n++)
 	{
 		float f;
-		char *fr = (char *)&f;
 
 		f = sin((n + phase) * 2*PI / period) * amp;
 
 		/* left channel */
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fr[i]);
+		if (fwrite(&f, sizeof f, 1, stdout) < 1)
+			break;
 
 		/* right channel */
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fr[i]);
+		if (fwrite(&f, sizeof f, 1, stdout) < 1)
+			break;
 	}
 
 	return 0;

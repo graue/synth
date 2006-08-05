@@ -48,10 +48,9 @@ static void limit(float max)
 	float oldvalues[ATTACK];
 	float maxvalue = 0.0f;
 	int start = 0;
-	char *fw;
-	int c, i, odd = 0;
+	int odd = 0;
+	int i;
 
-	fw = (char *)&f;
 	lookout = max * 0.9f;
 
 	for (i = 0; i < ATTACK; i++)
@@ -63,13 +62,8 @@ static void limit(float max)
 
 		odd = !odd;
 
-		for (i = 0; i < (int)sizeof (float); i++)
-		{
-			c = getchar();
-			if (c == EOF)
-				return;
-			fw[i] = c;
-		}
+		if (fread(&f, sizeof f, 1, stdin) < 1)
+			return;
 
 		in = f;
 
@@ -97,8 +91,8 @@ static void limit(float max)
 
 		f *= volume;
 
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fw[i]);
+		if (fwrite(&f, sizeof f, 1, stdout) < 1)
+			return;
 
 		if (maxchanged)
 		{

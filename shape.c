@@ -51,24 +51,15 @@ static float shapeval(float val, float r, float g)
 static void shape(float range, float gradation)
 {
 	float f;
-	char *fw;
-	int c, i;
-
-	fw = (char *)&f;
 
 	for (;;)
 	{
-		for (i = 0; i < (int)sizeof (float); i++)
-		{
-			c = getchar();
-			if (c == EOF)
-				return;
-			fw[i] = c;
-		}
+		if (fread(&f, sizeof f, 1, stdin) < 1)
+			return;
 
 		f = shapeval(f, range, gradation);
 
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fw[i]);
+		if (fwrite(&f, sizeof f, 1, stdout) < 1)
+			return;
 	}
 }
