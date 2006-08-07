@@ -6,7 +6,6 @@
 
 /* amp.c: adjust a waveform's volume */
 
-#define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 static void amp(float volume);
 
 int main(int argc, char *argv[])
@@ -20,8 +19,6 @@ int main(int argc, char *argv[])
 		if (!strcmp(argv[i], "-vol") && ++i < argc)
 			vol = atof(argv[i]);
 	}
-
-	vol = CLAMP(0.0f, vol, 100.0f);
 
 	amp(vol);
 	return 0;
