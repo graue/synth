@@ -39,6 +39,12 @@ int main(int argc, char *argv[])
 			len = atof(argv[i]) / 1000.0f * RATE; /* length in ms */
 		else if (!strcmp(argv[i], "-phase") && ++i < argc)
 			phase = atof(argv[i]); /* phase in degrees */
+		else if (!strcmp(argv[i], "-help"))
+		{
+			fprintf(stderr, "options: -freq arg, -amp arg, -len "
+				"arg, -phase arg\n");
+			exit(0);
+		}
 	}
 
 	/* check options */

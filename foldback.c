@@ -19,6 +19,11 @@ int main(int argc, char *argv[])
 	{
 		if (!strcmp(argv[i], "-threshold") && ++i < argc)
 			thresh = atof(argv[i]) * 32768.0f;
+		else if (!strcmp(argv[i], "-help"))
+		{
+			fprintf(stderr, "options: -threshold amplitude\n");
+			exit(0);
+		}
 	}
 
 	foldback(thresh);

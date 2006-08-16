@@ -24,6 +24,12 @@ int main(int argc, char *argv[])
 			range = atof(argv[i]);
 		else if (!strcmp(argv[i], "-gradation") && ++i < argc)
 			gradation = atof(argv[i]);
+		else if (!strcmp(argv[i], "-help"))
+		{
+			fprintf(stderr, "options: -range arg, -gradation "
+				"arg\n");
+			exit(0);
+		}
 	}
 
 	/* check options */

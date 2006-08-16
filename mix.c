@@ -24,6 +24,13 @@ int main(int argc, char *argv[])
 			if (++i < argc)
 				max = atof(argv[i]) * 32768.0f;
 		}
+		else if (!strcmp(argv[i], "-help"))
+		{
+			fprintf(stderr, "options: -amp overall_mul\n");
+			fprintf(stderr, "Also list 1 to %d input filenames.\n",
+				MAXINPUTS);
+			exit(0);
+		}
 		else if (argv[i][0] != '-')
 		{
 			if (numfiles == MAXINPUTS)

@@ -119,6 +119,16 @@ int main(int argc, char *argv[])
 				exit(EXIT_FAILURE);
 			}
 		}
+		else if (strcmp(argv[i], "-help") == 0)
+		{
+			fprintf(stderr,
+				"options: -type [hp|highpass|hpf|lp|lowpass|"
+				"lpf|bp_skirt_gain|bp|bandpass|bpf|\nnotch|ap|"
+				"allpass|apf|peakingeq|lowshelf|highshelf],\n"
+				"-slope arg, -dBgain arg, -q arg, -bw arg,\n"
+				"-[cutoff|center|corner|midpoint] arg\n");
+			exit(0);
+		}
 	}
 
 	computecoeffs(&co, type, usewhich, RATE, f0, dBgain, q, bw, slope);

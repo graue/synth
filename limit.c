@@ -24,6 +24,12 @@ int main(int argc, char *argv[])
 	{
 		if (!strcmp(argv[i], "-amp") && ++i < argc)
 			max = atof(argv[i]) * 32768.0f;
+		else if (!strcmp(argv[i], "-help"))
+		{
+			fprintf(stderr, "options: -amp arg\n");
+			fprintf(stderr, "This program does not work well.\n");
+			exit(0);
+		}
 	}
 
 	max = CLAMP(256.0f, max, 65536.0f);

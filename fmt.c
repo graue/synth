@@ -24,6 +24,11 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "-s8")) fmt = 1; /* 8-bit signed */
 		else if (!strcmp(argv[i], "-16")) fmt = 2; /* 16-bit signed */
 		else if (!strcmp(argv[i], "-32")) fmt = 4; /* 32-bit signed */
+		else if (!strcmp(argv[i], "-help"))
+		{
+			fprintf(stderr, "options: -u8, -s8, -16, -32\n");
+			exit(0);
+		}
 	}
 
 	if (fmt == 0)

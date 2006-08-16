@@ -18,6 +18,11 @@ int main(int argc, char *argv[])
 	{
 		if (!strcmp(argv[i], "-vol") && ++i < argc)
 			vol = atof(argv[i]);
+		else if (!strcmp(argv[i], "-help"))
+		{
+			fprintf(stderr, "options: -vol multiplicand\n");
+			exit(0);
+		}
 	}
 
 	amp(vol);

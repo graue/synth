@@ -30,6 +30,12 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "-24")) fmt = 3; /* 24-bit signed */
 		else if (!strcmp(argv[i], "-32")) fmt = 4; /* 32-bit signed */
 		else if (!strcmp(argv[i], "-mono")) monosrc = 1;
+		else if (!strcmp(argv[i], "-help"))
+		{
+			fprintf(stderr, "options: -u8, -s8, -16, -24, -32, "
+				"-mono\n");
+			exit(0);
+		}
 	}
 
 	if (fmt == 0)

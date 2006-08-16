@@ -18,6 +18,11 @@ int main(int argc, char *argv[])
 	{
 		if (!strcmp(argv[i], "-amp") && ++i < argc)
 			max = atof(argv[i]) * 32768.0f;
+		else if (!strcmp(argv[i], "-help"))
+		{
+			fprintf(stderr, "options: -amp amplitude\n");
+			exit(0);
+		}
 	}
 
 	clip(max, -max);
