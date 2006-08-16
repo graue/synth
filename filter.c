@@ -42,75 +42,75 @@ int main(int argc, char *argv[])
 	SET_BINARY_MODE
 	for (i = 1; i < argc; i++)
 	{
-		if ((strcmp(argv[i], "-cutoff") == NULL
-			|| strcmp(argv[i], "-center") == NULL
-			|| strcmp(argv[i], "-corner") == NULL
-			|| strcmp(argv[i], "-midpoint") == NULL)
+		if ((strcmp(argv[i], "-cutoff") == 0
+			|| strcmp(argv[i], "-center") == 0
+			|| strcmp(argv[i], "-corner") == 0
+			|| strcmp(argv[i], "-midpoint") == 0)
 			&& ++i < argc)
 		{
 			f0 = atof(argv[i]);
 			f0 = CLAMP(1.0f, f0, RATE * 0.499f);
 		}
-		else if ((strcmp(argv[i], "-dbgain") == NULL
-			|| strcmp(argv[i], "-dBgain") == NULL)
+		else if ((strcmp(argv[i], "-dbgain") == 0
+			|| strcmp(argv[i], "-dBgain") == 0)
 			&& ++i < argc)
 		{
 			dBgain = atof(argv[i]);
 			dBgain = CLAMP(-100.0f, q, 100.0f);
 		}
-		else if (strcmp(argv[i], "-q") == NULL && ++i < argc)
+		else if (strcmp(argv[i], "-q") == 0 && ++i < argc)
 		{
 			q = atof(argv[i]);
 			q = CLAMP(0.01f, q, 100.0f);
 			usewhich = USE_Q;
 		}
-		else if (strcmp(argv[i], "-bw") == NULL && ++i < argc)
+		else if (strcmp(argv[i], "-bw") == 0 && ++i < argc)
 		{
 			bw = atof(argv[i]);
 			bw = CLAMP(0.01f, bw, 100.0f);
 			usewhich = USE_BW;
 		}
-		else if (strcmp(argv[i], "-slope") == NULL && ++i < argc)
+		else if (strcmp(argv[i], "-slope") == 0 && ++i < argc)
 		{
 			slope = atof(argv[i]);
 			slope = CLAMP(0.01f, slope, 100.0f);
 			usewhich = USE_SLOPE;
 		}
-		else if (strcmp(argv[i], "-type") == NULL && ++i < argc)
+		else if (strcmp(argv[i], "-type") == 0 && ++i < argc)
 		{
-			if (strcmp(argv[i], "hp") == NULL
-				|| strcmp(argv[i], "highpass") == NULL
-				|| strcmp(argv[i], "hpf") == NULL)
+			if (strcmp(argv[i], "hp") == 0
+				|| strcmp(argv[i], "highpass") == 0
+				|| strcmp(argv[i], "hpf") == 0)
 			{
 				type = FILT_HP;
 			}
-			else if (strcmp(argv[i], "lp") == NULL
-				|| strcmp(argv[i], "lowpass") == NULL
-				|| strcmp(argv[i], "lpf") == NULL)
+			else if (strcmp(argv[i], "lp") == 0
+				|| strcmp(argv[i], "lowpass") == 0
+				|| strcmp(argv[i], "lpf") == 0)
 			{
 				type = FILT_LP;
 			}
-			else if (strcmp(argv[i], "bp_skirt_gain") == NULL)
+			else if (strcmp(argv[i], "bp_skirt_gain") == 0)
 				type = FILT_BP_SKIRT_GAIN;
-			else if (strcmp(argv[i], "bp") == NULL
-				|| strcmp(argv[i], "bandpass") == NULL
-				|| strcmp(argv[i], "bpf") == NULL)
+			else if (strcmp(argv[i], "bp") == 0
+				|| strcmp(argv[i], "bandpass") == 0
+				|| strcmp(argv[i], "bpf") == 0)
 			{
 				type = FILT_BP_CONSTANT_PEAK;
 			}
-			else if (strcmp(argv[i], "notch") == NULL)
+			else if (strcmp(argv[i], "notch") == 0)
 				type = FILT_NOTCH;
-			else if (strcmp(argv[i], "ap") == NULL
-				|| strcmp(argv[i], "allpass") == NULL
-				|| strcmp(argv[i], "apf") == NULL)
+			else if (strcmp(argv[i], "ap") == 0
+				|| strcmp(argv[i], "allpass") == 0
+				|| strcmp(argv[i], "apf") == 0)
 			{
 				type = FILT_AP;
 			}
-			else if (strcmp(argv[i], "peakingeq") == NULL)
+			else if (strcmp(argv[i], "peakingeq") == 0)
 				type = FILT_PEAKINGEQ;
-			else if (strcmp(argv[i], "lowshelf") == NULL)
+			else if (strcmp(argv[i], "lowshelf") == 0)
 				type = FILT_LOWSHELF;
-			else if (strcmp(argv[i], "highshelf") == NULL)
+			else if (strcmp(argv[i], "highshelf") == 0)
 				type = FILT_HIGHSHELF;
 			else
 			{
