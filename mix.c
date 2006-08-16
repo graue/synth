@@ -59,14 +59,11 @@ int main(int argc, char *argv[])
 static void mix(FILE **inputs, int numfiles)
 {
 	float f;
-	char *fw;
-	int c, i, j;
+	int i;
 	int filedone[MAXINPUTS];
 	int filesleft = numfiles;
 
 	memset(filedone, 0, numfiles * sizeof (int));
-
-	fw = (char *)&f;
 
 	for (;;)
 	{
@@ -77,19 +74,9 @@ static void mix(FILE **inputs, int numfiles)
 			if (filedone[i])
 				continue;
 
-			for (j = 0; j < (int)sizeof (float); j++)
+			if (fread(&f, sizeof f, 1, inputs[i]) < 1)
 			{
-				c = getc(inputs[i]);
-				if (c == EOF)
-				{
-					filedone[i] = 1;
-					break;
-				}
-				fw[j] = c;
-			}
-
-			if (filedone[i])
-			{
+				filedone[i] = 1;
 				filesleft--;
 				if (filesleft == 0)
 					return;
@@ -100,7 +87,6 @@ static void mix(FILE **inputs, int numfiles)
 		}
 
 		f = sum;
-		for (j = 0; j < (int)sizeof (float); j++)
-			putchar(fw[j]);
+		fwrite(&f, sizeof f, 1, stdout);
 	}
 }

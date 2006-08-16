@@ -5,11 +5,14 @@
 
 /* unfmt: convert integers on stdin to internal float format */
 
+static int monosrc; /* convert from mono? */
 static void conv_u8(void);
 static void conv_s8(void);
 static void conv_16(void);
 static void conv_24(void);
 static void conv_32(void);
+
+#define PERCHANNEL(code) (code); if (monosrc) { (code); }
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +29,7 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "-16")) fmt = 2; /* 16-bit signed */
 		else if (!strcmp(argv[i], "-24")) fmt = 3; /* 24-bit signed */
 		else if (!strcmp(argv[i], "-32")) fmt = 4; /* 32-bit signed */
+		else if (!strcmp(argv[i], "-mono")) monosrc = 1;
 	}
 
 	if (fmt == 0)
@@ -62,7 +66,7 @@ static void conv_u8(void)
 		/* expand range from -128 .. 127 to -32768 .. 32767 */
 		f *= 256.0f;
 
-		fwrite(&f, sizeof f, 1, stdout);
+		PERCHANNEL(fwrite(&f, sizeof f, 1, stdout))
 	}
 }
 
@@ -83,7 +87,7 @@ static void conv_s8(void)
 		/* expand range from -128 .. 127 to -32768 .. 32767 */
 		f *= 256.0f;
 
-		fwrite(&f, sizeof f, 1, stdout);
+		PERCHANNEL(fwrite(&f, sizeof f, 1, stdout))
 	}
 }
 
@@ -109,7 +113,7 @@ static void conv_16(void)
 
 		f = s;
 
-		fwrite(&f, sizeof f, 1, stdout);
+		PERCHANNEL(fwrite(&f, sizeof f, 1, stdout))
 	}
 }
 
@@ -150,7 +154,7 @@ static void conv_24(void)
 
 		f = (float)d;
 
-		fwrite(&f, sizeof f, 1, stdout);
+		PERCHANNEL(fwrite(&f, sizeof f, 1, stdout))
 	}
 }
 
@@ -191,6 +195,6 @@ static void conv_32(void)
 
 		f = (float)d;
 
-		fwrite(&f, sizeof f, 1, stdout);
+		PERCHANNEL(fwrite(&f, sizeof f, 1, stdout))
 	}
 }
