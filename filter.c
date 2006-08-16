@@ -7,6 +7,12 @@
 
 /* filter.c: highpass, lowpass, or other IIR filter */
 
+/*
+ * See Robert Bristow-Johnson's "cookbook filters" article.
+ * This code implements the "cookbook" filters discussed
+ * there.
+ */
+
 #define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 
 typedef struct
