@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include "binary.h"
 
 /* amp.c: adjust a waveform's volume */
