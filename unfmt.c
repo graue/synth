@@ -46,10 +46,7 @@ static void conv_u8(void)
 {
 	float f;
 	unsigned char s;
-	char *fw;
-	int c, i;
-
-	fw = (char *)&f;
+	int c;
 
 	for (;;)
 	{
@@ -65,8 +62,7 @@ static void conv_u8(void)
 		/* expand range from -128 .. 127 to -32768 .. 32767 */
 		f *= 256.0f;
 
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fw[i]);
+		fwrite(&f, sizeof f, 1, stdout);
 	}
 }
 
@@ -74,10 +70,7 @@ static void conv_s8(void)
 {
 	float f;
 	signed char s;
-	char *fw;
-	int c, i;
-
-	fw = (char *)&f;
+	int c;
 
 	for (;;)
 	{
@@ -90,8 +83,7 @@ static void conv_s8(void)
 		/* expand range from -128 .. 127 to -32768 .. 32767 */
 		f *= 256.0f;
 
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fw[i]);
+		fwrite(&f, sizeof f, 1, stdout);
 	}
 }
 
@@ -99,11 +91,9 @@ static void conv_16(void)
 {
 	float f;
 	short s;
-	char *fw;
 	char *sr;
-	int c, i;
+	int c;
 
-	fw = (char *)&f;
 	sr = (char *)&s;
 
 	for (;;)
@@ -119,8 +109,7 @@ static void conv_16(void)
 
 		f = s;
 
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fw[i]);
+		fwrite(&f, sizeof f, 1, stdout);
 	}
 }
 
@@ -129,11 +118,9 @@ static void conv_24(void)
 	float f;
 	double d;
 	int s;
-	char *fw;
 	char *sr;
-	int c, i;
+	int c;
 
-	fw = (char *)&f;
 	sr = (char *)&s;
 
 	for (;;)
@@ -163,8 +150,7 @@ static void conv_24(void)
 
 		f = (float)d;
 
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fw[i]);
+		fwrite(&f, sizeof f, 1, stdout);
 	}
 }
 
@@ -173,11 +159,9 @@ static void conv_32(void)
 	float f;
 	double d;
 	int s;
-	char *fw;
 	char *sr;
-	int c, i;
+	int c;
 
-	fw = (char *)&f;
 	sr = (char *)&s;
 
 	for (;;)
@@ -207,7 +191,6 @@ static void conv_32(void)
 
 		f = (float)d;
 
-		for (i = 0; i < (int)sizeof (float); i++)
-			putchar(fw[i]);
+		fwrite(&f, sizeof f, 1, stdout);
 	}
 }
