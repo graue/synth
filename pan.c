@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "binary.h"
+#include "synth.h"
 
 /* pan.c: adjust a waveform's horizontal panning */
 
-#define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 static void pan(float angle);
 
 int main(int argc, char *argv[])

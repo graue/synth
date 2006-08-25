@@ -2,12 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "binary.h"
-#include "defs.h"
+#include "synth.h"
 
 /* sine: generate a sine wave */
-
-#define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 
 int main(int argc, char *argv[])
 {

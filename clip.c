@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "binary.h"
+#include "synth.h"
 
 /* clip.c: clip a waveform */
 
-#define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 static void clip(float max, float min);
 
 int main(int argc, char *argv[])

@@ -1,12 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "binary.h"
-#include "defs.h"
+#include "synth.h"
 
 /* delay.c: a delay line */
-
-#define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 
 static void delay(int len_in_smp, float feedback);
 

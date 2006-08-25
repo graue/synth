@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "binary.h"
+#include "synth.h"
 
 /* foldback.c: foldback distortion on a waveform */
 
-#define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 static void foldback(float threshold);
 
 int main(int argc, char *argv[])

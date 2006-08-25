@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "binary.h"
-#include "defs.h"
+#include "synth.h"
 
 /* limit.c: limit a waveform's dynamic range, roughly */
 

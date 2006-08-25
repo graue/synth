@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "binary.h"
+#include "synth.h"
 
 /* pink.c: make pink noise from white */
 

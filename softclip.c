@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "binary.h"
+#include "synth.h"
 
 /* softclip.c: soft clip a waveform */
 
-#define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 static void softclip(float range, float gradation);
 
 int main(int argc, char *argv[])

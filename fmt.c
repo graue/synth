@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "binary.h"
+#include "synth.h"
 
 /* fmt: convert floats on stdin to their final format */
 
