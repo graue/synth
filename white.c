@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
 	amp *= 32768.0f;
 	range = amp * 2;
 
+	srand((unsigned int)time(NULL));
 	for (n = 0; n < len*2; n++)
 	{
 		float f;
