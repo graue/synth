@@ -7,10 +7,6 @@
 
 /* sine: generate a sine wave */
 
-#ifndef PI
-#define PI 3.1415927f
-#endif
-
 #define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 
 int main(int argc, char *argv[])
@@ -49,14 +45,14 @@ int main(int argc, char *argv[])
 
 	/* convert options */
 	amp *= 32768.0f;
-	phase = phase * PI / 180.0f;
+	phase = phase * M_PI / 180.0f;
 	period = RATE / freq;
 
 	for (n = 0; n < len; n++)
 	{
 		float f;
 
-		f = sin((n + phase) * 2*PI / period) * amp;
+		f = sin((n + phase) * 2*M_PI / period) * amp;
 
 		/* left channel */
 		if (fwrite(&f, sizeof f, 1, stdout) < 1)

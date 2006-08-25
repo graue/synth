@@ -6,10 +6,6 @@
 
 /* pan.c: adjust a waveform's horizontal panning */
 
-#ifndef PI
-#define PI 3.1415927f
-#endif
-
 #define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 static void pan(float angle);
 
@@ -36,7 +32,7 @@ int main(int argc, char *argv[])
 	angle = CLAMP(-180.0f, angle, 180.0f);
 
 	/* convert options */
-	angle = angle * PI / 180.0f;
+	angle = angle * M_PI / 180.0f;
 
 	pan(angle);
 	return 0;
