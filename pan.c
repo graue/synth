@@ -42,8 +42,6 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-#define SQRT2 1.414214f
-
 static void pan(float angle)
 {
 	float f;
