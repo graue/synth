@@ -1,0 +1,5 @@
+#!/bin/sh
+for i
+  do i=`dirname $i`/`basename $i .c`
+  gcc $i.c -o `basename $i` -W -Wall -O3 -fexpensive-optimizations -ansi -lm -s
+done
