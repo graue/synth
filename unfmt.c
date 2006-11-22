@@ -101,21 +101,11 @@ static void conv_16(void)
 {
 	float f;
 	short s;
-	char *sr;
-	int c;
-
-	sr = (char *)&s;
 
 	for (;;)
 	{
-		c = getchar();
-		if (c == EOF)
+		if (fread(&s, sizeof s, 1, stdin) < 1)
 			return;
-		sr[0] = c;
-		c = getchar();
-		if (c == EOF)
-			return;
-		sr[1] = c;
 
 		f = s;
 
@@ -169,29 +159,11 @@ static void conv_32(void)
 	float f;
 	double d;
 	int s;
-	char *sr;
-	int c;
-
-	sr = (char *)&s;
 
 	for (;;)
 	{
-		c = getchar();
-		if (c == EOF)
+		if (fread(&s, sizeof s, 1, stdin) < 1)
 			return;
-		sr[0] = c;
-		c = getchar();
-		if (c == EOF)
-			return;
-		sr[1] = c;
-		c = getchar();
-		if (c == EOF)
-			return;
-		sr[2] = c;
-		c = getchar();
-		if (c == EOF)
-			return;
-		sr[3] = c;
 
 		d = (double)s;
 
