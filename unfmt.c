@@ -125,10 +125,12 @@ static void conv_24(void)
 
 	for (;;)
 	{
+#ifndef BIG_ENDIAN
 		c = getchar();
 		if (c == EOF)
 			return;
 		sr[0] = c;
+#endif
 		c = getchar();
 		if (c == EOF)
 			return;
@@ -137,10 +139,15 @@ static void conv_24(void)
 		if (c == EOF)
 			return;
 		sr[2] = c;
-		if (sr[2] & 0x80)
-			sr[3] = 0xff;
-		else
-			sr[3] = 0;
+#ifdef BIG_ENDIAN
+		c = getchar();
+		if (c == EOF)
+			return;
+		sr[3] = c;
+		sr[0] = (sr[1] & 0x80) ? 0xff : 0;
+#else
+		sr[3] = (sr[2] & 0x80) ? 0xff : 0;
+#endif
 
 		d = (double)s;
 
