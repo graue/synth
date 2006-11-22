@@ -118,10 +118,10 @@ static void conv_24(void)
 	float f;
 	double d;
 	int s;
-	char *sr;
+	unsigned char *sr;
 	int c;
 
-	sr = (char *)&s;
+	sr = (unsigned char *)&s;
 
 	for (;;)
 	{
