@@ -11,3 +11,15 @@ toys. Example usage:
 unfmt -16 <mysong.raw | amp -vol 2.0 | softsat | fmt -16 >louder.raw
 
 This code is copyright-free.
+
+
+You can build each program with the provided "build" script.
+Type "./build *.c" to make them all. To put the binaries in
+a separate directory, you can do something like "mkdir bin"
+and "cd bin" and "../build ../*.c".
+
+For a big-endian system, add -DBIG_ENDIAN to the gcc
+invocation line in the build script. This is required for
+unfmt to work right with 24-bit audio (which hasn't been
+tested, so if it still doesn't work, email me:
+graue@oceanbase.org).
