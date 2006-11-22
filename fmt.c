@@ -47,20 +47,11 @@ static void conv_u8(void)
 {
 	float f;
 	unsigned char s;
-	char *fw;
-	int c, i;
-
-	fw = (char *)&f;
 
 	for (;;)
 	{
-		for (i = 0; i < (int)sizeof (float); i++)
-		{
-			c = getchar();
-			if (c == EOF)
-				return;
-			fw[i] = (char)c;
-		}
+		if (fread(&f, sizeof f, 1, stdin) < 1)
+			return;
 
 		/* squish range from -32768 .. 32767 to -128 .. 127 */
 		f /= 256.0f;
@@ -83,20 +74,11 @@ static void conv_s8(void)
 {
 	float f;
 	signed char s;
-	char *fw;
-	int c, i;
-
-	fw = (char *)&f;
 
 	for (;;)
 	{
-		for (i = 0; i < (int)sizeof (float); i++)
-		{
-			c = getchar();
-			if (c == EOF)
-				return;
-			fw[i] = (char)c;
-		}
+		if (fread(&f, sizeof f, 1, stdin) < 1)
+			return;
 
 		/* squish range from -32768 .. 32767 to -128 .. 127 */
 		f /= 256.0f;
@@ -116,22 +98,11 @@ static void conv_16(void)
 {
 	float f;
 	short s;
-	char *fw;
-	char *sr;
-	int c, i;
-
-	fw = (char *)&f;
-	sr = (char *)&s;
 
 	for (;;)
 	{
-		for (i = 0; i < (int)sizeof (float); i++)
-		{
-			c = getchar();
-			if (c == EOF)
-				return;
-			fw[i] = (char)c;
-		}
+		if (fread(&f, sizeof f, 1, stdin) < 1)
+			return;
 
 		/* clip */
 		if (f < -32768.0f)
@@ -140,8 +111,7 @@ static void conv_16(void)
 			f = 32767.0f;
 
 		s = (short)f;
-		putchar(sr[0]);
-		putchar(sr[1]);
+		fwrite(&s, sizeof s, 1, stdout);
 	}
 }
 
@@ -150,22 +120,11 @@ static void conv_32(void)
 	float f;
 	double d;
 	int s;
-	char *fw;
-	char *sr;
-	int c, i;
-
-	fw = (char *)&f;
-	sr = (char *)&s;
 
 	for (;;)
 	{
-		for (i = 0; i < (int)sizeof (float); i++)
-		{
-			c = getchar();
-			if (c == EOF)
-				return;
-			fw[i] = (char)c;
-		}
+		if (fread(&f, sizeof f, 1, stdin) < 1)
+			return;
 
 		/* clip */
 		if (f < -32768.0f)
@@ -182,9 +141,6 @@ static void conv_32(void)
 		d *= 32768.0f;
 
 		s = (int)d;
-		putchar(sr[0]);
-		putchar(sr[1]);
-		putchar(sr[2]);
-		putchar(sr[3]);
+		fwrite(&s, sizeof s, 1, stdout);
 	}
 }
