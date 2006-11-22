@@ -8,6 +8,7 @@
 static void conv_u8(void);
 static void conv_s8(void);
 static void conv_16(void);
+static void conv_24(void);
 static void conv_32(void);
 
 int main(int argc, char *argv[])
@@ -23,10 +24,11 @@ int main(int argc, char *argv[])
 		     if (!strcmp(argv[i], "-u8")) fmt = 0; /* 8-bit unsigned */
 		else if (!strcmp(argv[i], "-s8")) fmt = 1; /* 8-bit signed */
 		else if (!strcmp(argv[i], "-16")) fmt = 2; /* 16-bit signed */
+		else if (!strcmp(argv[i], "-24")) fmt = 3; /* 24-bit signed */
 		else if (!strcmp(argv[i], "-32")) fmt = 4; /* 32-bit signed */
 		else if (!strcmp(argv[i], "-help"))
 		{
-			fprintf(stderr, "options: -u8, -s8, -16, -32\n");
+			fprintf(stderr, "options: -u8, -s8, -16, -24, -32\n");
 			exit(0);
 		}
 	}
@@ -37,6 +39,8 @@ int main(int argc, char *argv[])
 		conv_s8();
 	else if (fmt == 2)
 		conv_16();
+	else if (fmt == 3)
+		conv_24();
 	else if (fmt == 4)
 		conv_32();
 
@@ -112,6 +116,44 @@ static void conv_16(void)
 
 		s = (short)f;
 		fwrite(&s, sizeof s, 1, stdout);
+	}
+}
+
+static void conv_24(void)
+{
+	float f;
+	double d;
+	int s;
+	unsigned char *sw;
+
+	sw = (unsigned char *)&s;
+
+	while (fread(&f, sizeof f, 1, stdin) == 1)
+	{
+		d = f;
+
+		/*
+		 * Expand range of samples from -32768 .. 32767
+		 * to -8388608 .. 8388607.
+		 */
+		d *= 256.0f;
+
+		/* Clip. */
+		if (d > 8388607.0f) d = 8388607.0f;
+		else if (d < -8388608.0f) d = -8388608.f;
+
+		s = (int)d;
+#ifdef BIG_ENDIAN
+		if (sw[0] == 0xff) putc(sw[1] | 0x80, stdout);
+		else putc(sw[1], stdout);
+		putc(sw[2], stdout);
+		putc(sw[3], stdout);
+#else
+		if (sw[3] == 0xff) putc(sw[2] | 0x80, stdout);
+		else putc(sw[2], stdout);
+		putc(sw[1], stdout);
+		putc(sw[0], stdout);
+#endif
 	}
 }
 
