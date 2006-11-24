@@ -20,6 +20,6 @@ and "cd bin" and "../build ../*.c".
 
 For a big-endian system, add -DBIG_ENDIAN to the gcc
 invocation line in the build script. This is required for
-unfmt to work right with 24-bit audio (which hasn't been
-tested, so if it still doesn't work, email me:
+unfmt and fmt to work right with 24-bit audio (which hasn't
+been tested, so if it still doesn't work, email me:
 graue@oceanbase.org).
