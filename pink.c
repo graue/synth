@@ -7,9 +7,19 @@
 
 static void pink(void);
 
-int main(void)
+int main(int argc, char *argv[])
 {
+	int i;
+
 	SET_BINARY_MODE
+	for (i = 1; i < argc; i++)
+	{
+		if (strcmp(argv[i], "-help") == 0)
+		{
+			fprintf(stderr, "options: none\n");
+			exit(0);
+		}
+	}
 
 	pink();
 	return 0;
