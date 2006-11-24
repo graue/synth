@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 			angle = atof(argv[i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
-			fprintf(stderr, "options: -angle arg (-90 to 90)\n");
+			fprintf(stderr, "options: -angle arg (-180 to 180)\n");
 			exit(0);
 		}
 	}
