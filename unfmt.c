@@ -19,8 +19,6 @@ int main(int argc, char *argv[])
 	int fmt = 2;
 	int i;
 
-	SET_BINARY_MODE
-
 	/* read options */
 	for (i = 1; i < argc; i++)
 	{
@@ -38,6 +36,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	SET_BINARY_MODE
 	if (fmt == 0)
 		conv_u8();
 	else if (fmt == 1)

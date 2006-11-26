@@ -14,7 +14,6 @@ int main(int argc, char *argv[])
 	int len_in_smp;
 	int i;
 
-	SET_BINARY_MODE
 	for (i = 1; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "-len") && ++i < argc)
@@ -34,6 +33,7 @@ int main(int argc, char *argv[])
 	if (len_in_smp == 0)
 		len_in_smp = 1;
 
+	SET_BINARY_MODE
 	delay(len_in_smp, feedback);
 	return 0;
 }

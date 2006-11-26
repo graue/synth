@@ -22,7 +22,6 @@ int main(int argc, char *argv[])
 	float mag = 0.001f;
 	int i;
 
-	SET_BINARY_MODE
 	for (i = 1; i < argc; i++)
 	{
 		if (strcmp(argv[i], "-len") == 0 && ++i < argc)
@@ -36,6 +35,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	SET_BINARY_MODE
 	gate(len, mag);
 	return 0;
 }

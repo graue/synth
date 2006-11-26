@@ -23,8 +23,6 @@ int main(int argc, char *argv[])
 	long n;
 	int i;
 
-	SET_BINARY_MODE
-
 	/* read options */
 	for (i = 1; i < argc; i++)
 	{
@@ -53,6 +51,7 @@ int main(int argc, char *argv[])
 	amp *= 32768.0f;
 	period = RATE / freq;
 
+	SET_BINARY_MODE
 	for (n = 0; n < len; n++)
 	{
 		float f;

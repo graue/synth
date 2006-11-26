@@ -14,8 +14,6 @@ int main(int argc, char *argv[])
 	float gradation = 0.5f;
 	int i;
 
-	SET_BINARY_MODE
-
 	/* read options */
 	for (i = 1; i < argc; i++)
 	{
@@ -37,6 +35,7 @@ int main(int argc, char *argv[])
 	/* convert options */
 	range /= (gradation + 1) / 2; /* 0.75f for the default 0.5f */
 
+	SET_BINARY_MODE
 	softsat(range, gradation);
 	return 0;
 }

@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
 	float max = 32768.0f;
 	int i;
 
-	SET_BINARY_MODE
 	for (i = 1; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "-amp") && ++i < argc)
@@ -33,6 +32,7 @@ int main(int argc, char *argv[])
 
 	max = CLAMP(256.0f, max, 65536.0f);
 
+	SET_BINARY_MODE
 	limit(max);
 	return 0;
 }

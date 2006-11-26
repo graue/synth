@@ -13,7 +13,6 @@ int main(int argc, char *argv[])
 	float thresh = 32768.0f;
 	int i;
 
-	SET_BINARY_MODE
 	for (i = 1; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "-threshold") && ++i < argc)
@@ -25,6 +24,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	SET_BINARY_MODE
 	foldback(thresh);
 	return 0;
 }

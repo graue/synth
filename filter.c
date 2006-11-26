@@ -44,7 +44,6 @@ int main(int argc, char *argv[])
 	int i;
 	biquadcoeffs_t co;
 
-	SET_BINARY_MODE
 	for (i = 1; i < argc; i++)
 	{
 		if ((strcmp(argv[i], "-cutoff") == 0
@@ -137,6 +136,7 @@ int main(int argc, char *argv[])
 	}
 
 	computecoeffs(&co, type, usewhich, RATE, f0, dBgain, q, bw, slope);
+	SET_BINARY_MODE
 	filter(&co);
 	return 0;
 }

@@ -13,7 +13,6 @@ int main(int argc, char *argv[])
 {
 	int i;
 
-	SET_BINARY_MODE
 	for (i = 1; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "-help"))
@@ -23,6 +22,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	SET_BINARY_MODE
 	midside();
 	return 0;
 }

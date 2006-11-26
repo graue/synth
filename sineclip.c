@@ -15,7 +15,6 @@ int main(int argc, char *argv[])
 	float dc = 0.75f;
 	int i;
 
-	SET_BINARY_MODE
 	for (i = 1; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "-amp") && ++i < argc)
@@ -32,6 +31,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	SET_BINARY_MODE
 	sineclip(amp, freq, dc);
 	return 0;
 }

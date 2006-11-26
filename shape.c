@@ -13,8 +13,6 @@ int main(int argc, char *argv[])
 	float gradation = 3.0f;
 	int i;
 
-	SET_BINARY_MODE
-
 	/* read options */
 	for (i = 1; i < argc; i++)
 	{
@@ -34,6 +32,7 @@ int main(int argc, char *argv[])
 	range     = CLAMP(-2.0f, range, 2.0f);
 	gradation = CLAMP(0.1f, gradation, 15.0f);
 
+	SET_BINARY_MODE
 	shape(range, gradation);
 	return 0;
 }

@@ -13,8 +13,6 @@ int main(int argc, char *argv[])
 	float angle = 0.0f;
 	int i;
 
-	SET_BINARY_MODE
-
 	/* read options */
 	for (i = 1; i < argc; i++)
 	{
@@ -33,6 +31,7 @@ int main(int argc, char *argv[])
 	/* convert options */
 	angle = angle * M_PI / 180.0f;
 
+	SET_BINARY_MODE
 	pan(angle);
 	return 0;
 }

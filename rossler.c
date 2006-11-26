@@ -16,8 +16,6 @@ int main(int argc, char *argv[])
 	int mono = 0;
 	int i;
 
-	SET_BINARY_MODE
-
 	/* read options */
 	for (i = 1; i < argc; i++)
 	{
@@ -37,6 +35,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	SET_BINARY_MODE
 	rossler(freq, amp, len_ms, mono);
 	return 0;
 }
