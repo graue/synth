@@ -31,7 +31,9 @@ static void sfclip2(void)
 
 	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
+		f *= 32768.0f;
 		f = f*(27 + f*f) / (27 + 9*f*f);
+		f /= 32768.0f;
 		if (fwrite(&f, sizeof f, 1, stdout) < 1)
 			return;
 	}
