@@ -4,7 +4,7 @@
 #include <math.h>
 #include "synth.h"
 
-/* comp.c: compressor (peak only for now, rms stuff not implemented yet) */
+/* comp.c: compressor */
 
 static void compress(float threshdB, float ratio, float attack, float release,
 	int rms);
@@ -64,15 +64,17 @@ static float attrelenv_run(float attcoef, float relcoef, float in, float state)
 #define RATTODB(x) (log(x) * M_20_OVER_LN10)
 #define DBTORAT(x) exp((x) * M_LN10_OVER_20)
 
-#define RMS_TIME_MS 5.0f /* RMS averaging time in milliseconds */
+#define RMS_WINDOW 5.0f /* RMS averaging time in milliseconds */
 
 static void compress(float threshdB, float ratio, float attack, float release,
 	int rms)
 {
 	float f[2];
 	float envdB = DC_OFFSET;
+	float rmsstate = DC_OFFSET;
 	const float attcoef = ENV_COEF(attack);
 	const float relcoef = ENV_COEF(release);
+	const float rmscoef = ENV_COEF(RMS_WINDOW);
 
 	while (fread(f, sizeof f[0], 2, stdin) == 2)
 	{
@@ -81,13 +83,35 @@ static void compress(float threshdB, float ratio, float attack, float release,
 		float overdB;
 		float mul;
 
-		rect[0] = fabs(f[0]);
-		rect[1] = fabs(f[1]);
-		link = rect[0] > rect[1] ? rect[0] : rect[1];
-		link /= 32768.0f;
+		if (rms)
+		{
+			float avg;
+
+			/* square input */
+			rect[0] = f[0] / 32768.0f;
+			rect[0] *= rect[0];
+			rect[1] = f[1] / 32768.0f;
+			rect[1] *= rect[1];
+			avg = (rect[0] + rect[1]) / 2.0f;
+			avg += DC_OFFSET; /* prevent denormal */
+			rmsstate = env_run(rmscoef, avg, rmsstate);
+			link = sqrt(rmsstate); /* approximate RMS */
+
+			/*
+			 * This only approximates RMS, using a 1-pole IIR
+			 * instead of an FIR moving average. Close enough.
+			 */
+		}
+		else
+		{
+			rect[0] = fabs(f[0]);
+			rect[1] = fabs(f[1]);
+			link = rect[0] > rect[1] ? rect[0] : rect[1];
+			link /= 32768.0f;
+		}
+
 		link += DC_OFFSET; /* to avoid log(0) */
 		linkdB = RATTODB(link);
-
 		overdB = linkdB - threshdB;
 		if (overdB < 0.0f) overdB = 0.0f;
 
