@@ -59,9 +59,7 @@ static void conv_u8(void)
 
 	for (;;)
 	{
-		c = getchar();
-		if (c == EOF)
-			return;
+		if ((c = getchar()) == EOF) return;
 		s = (unsigned char)c;
 		f = s;
 
@@ -83,9 +81,7 @@ static void conv_s8(void)
 
 	for (;;)
 	{
-		c = getchar();
-		if (c == EOF)
-			return;
+		if ((c = getchar()) == EOF) return;
 		s = (signed char)c;
 		f = s;
 
@@ -125,23 +121,15 @@ static void conv_24(void)
 	for (;;)
 	{
 #ifndef BIG_ENDIAN
-		c = getchar();
-		if (c == EOF)
-			return;
+		if ((c = getchar()) == EOF) return;
 		sr[0] = c;
 #endif
-		c = getchar();
-		if (c == EOF)
-			return;
+		if ((c = getchar()) == EOF) return;
 		sr[1] = c;
-		c = getchar();
-		if (c == EOF)
-			return;
+		if ((c = getchar()) == EOF) return;
 		sr[2] = c;
 #ifdef BIG_ENDIAN
-		c = getchar();
-		if (c == EOF)
-			return;
+		if ((c = getchar()) == EOF) return;
 		sr[3] = c;
 		sr[0] = (sr[1] & 0x80) ? 0xff : 0;
 #else
