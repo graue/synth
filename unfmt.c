@@ -57,9 +57,8 @@ static void conv_u8(void)
 	unsigned char s;
 	int c;
 
-	for (;;)
+	while ((c = getchar()) != EOF)
 	{
-		if ((c = getchar()) == EOF) return;
 		s = (unsigned char)c;
 		f = s;
 
@@ -79,9 +78,8 @@ static void conv_s8(void)
 	signed char s;
 	int c;
 
-	for (;;)
+	while ((c = getchar()) != EOF)
 	{
-		if ((c = getchar()) == EOF) return;
 		s = (signed char)c;
 		f = s;
 
@@ -97,13 +95,9 @@ static void conv_16(void)
 	float f;
 	short s;
 
-	for (;;)
+	while (fread(&s, sizeof s, 1, stdin) == 1)
 	{
-		if (fread(&s, sizeof s, 1, stdin) < 1)
-			return;
-
 		f = s;
-
 		PERCHANNEL(fwrite(&f, sizeof f, 1, stdout))
 	}
 }
@@ -154,11 +148,8 @@ static void conv_32(void)
 	double d;
 	int s;
 
-	for (;;)
+	while (fread(&s, sizeof s, 1, stdin) == 1)
 	{
-		if (fread(&s, sizeof s, 1, stdin) < 1)
-			return;
-
 		d = (double)s;
 
 		/* squish range of samples from -2147483648 .. 2147483647

@@ -45,12 +45,9 @@ static void pan(float angle)
 	leftamp  = cos(angle) + sin(angle);
 	rightamp = cos(angle) - sin(angle);
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
 		odd = !odd;
-
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
 
 		if (odd) /* left speaker */
 			f *= leftamp;

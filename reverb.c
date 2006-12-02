@@ -89,11 +89,8 @@ static void reverb(float volume)
 
 	(void)volume; /* XXX unused */
 
-	for (;;)
+	while (fread(f, sizeof f[0], 2, stdin) == 2)
 	{
-		if (fread(f, sizeof f[0], 2, stdin) < 2)
-			return;
-
 		f[0] /= 32768.0f;
 		rev[0] = do_reverb(rev[0], f, 1);
 		f[0] *= 32768.0f;

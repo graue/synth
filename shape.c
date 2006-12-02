@@ -56,11 +56,8 @@ static void shape(float range, float gradation)
 {
 	float f;
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
-
 		f = shapeval(f, range, gradation);
 
 		if (fwrite(&f, sizeof f, 1, stdout) < 1)

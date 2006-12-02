@@ -56,11 +56,8 @@ static void delay(int len_in_smp, float feedback)
 	for (i = 0; i < len_in_smp; i++)
 		buf[i] = 0.0f;
 
-	for (;;)
+	while (fread(&f0, sizeof f0, 1, stdin) == 1)
 	{
-		if (fread(&f0, sizeof f0, 1, stdin) < 1)
-			return;
-
 		f = f0 + buf[bufpos];
 
 		if (fwrite(&f, sizeof f, 1, stdout) < 1)

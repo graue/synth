@@ -46,11 +46,8 @@ static void sineclip(float amp, float freq, float dc)
 	amp *= 32768.0f;
 	dc *= 32768.0f;
 
-	for (;;)
+	while (fread(f, sizeof f, 1, stdin) == 1)
 	{
-		if (fread(f, sizeof f, 1, stdin) < 1)
-			return;
-
 		sinelimit = sin(phase)*amp + dc;
 		f[0] = CLAMP(-sinelimit, f[0], sinelimit);
 		f[1] = CLAMP(-sinelimit, f[1], sinelimit);

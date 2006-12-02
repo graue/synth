@@ -32,11 +32,8 @@ static void amp(float volume)
 {
 	float f;
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
-
 		f *= volume;
 
 		if (fwrite(&f, sizeof f, 1, stdout) < 1)

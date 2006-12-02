@@ -32,11 +32,8 @@ static void clip(float max, float min)
 {
 	float f;
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
-
 		f = CLAMP(min, f, max);
 
 		if (fwrite(&f, sizeof f, 1, stdout) < 1)

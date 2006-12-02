@@ -46,11 +46,8 @@ static void softclip(float range, float gradation)
 	gradinv = 1.0f/gradation;
 	range *= 32768.0f;
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
-
 		f /= range;
 
 		f = gradinv * atan(f * gradation);

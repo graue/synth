@@ -61,14 +61,11 @@ static void limit(float max)
 	for (i = 0; i < ATTACK; i++)
 		oldvalues[i] = 0.0f;
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
 		int maxchanged = 0;
 
 		odd = !odd;
-
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
 
 		in = f;
 

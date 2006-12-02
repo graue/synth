@@ -51,11 +51,8 @@ static void conv_u8(void)
 	float f;
 	unsigned char s;
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
-
 		/* squish range from -32768 .. 32767 to -128 .. 127 */
 		f /= 256.0f;
 
@@ -78,11 +75,8 @@ static void conv_s8(void)
 	float f;
 	signed char s;
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
-
 		/* squish range from -32768 .. 32767 to -128 .. 127 */
 		f /= 256.0f;
 
@@ -102,11 +96,8 @@ static void conv_16(void)
 	float f;
 	short s;
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
-
 		/* clip */
 		if (f < -32768.0f)
 			f = -32768.0f;
@@ -162,11 +153,8 @@ static void conv_32(void)
 	double d;
 	int s;
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
-
 		/* clip */
 		if (f < -32768.0f)
 			f = -32768.0f;

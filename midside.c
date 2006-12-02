@@ -31,11 +31,8 @@ static void midside(void)
 {
 	float in[2], out[2];
 
-	for (;;)
+	while (fread(in, sizeof in[0], 2, stdin) == 1)
 	{
-		if (fread(in, sizeof in[0], 2, stdin) < 1)
-			return;
-
 		out[1] = in[0] - in[1];
 		out[0] = in[0] - out[1]/2;
 

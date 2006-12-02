@@ -263,11 +263,8 @@ static void filter(const biquadcoeffs_t *coeffs)
 	c4 = coeffs->a1 / coeffs->a0;
 	c5 = coeffs->a2 / coeffs->a0;
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
-
 		o = !o;
 		x[o][n-2] = x[o][n-1];
 		x[o][n-1] = x[o][n];

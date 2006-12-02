@@ -33,11 +33,8 @@ static void foldback(float threshold)
 {
 	float f;
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
-
 		if (f > threshold || f < -threshold)
 		{
 			f = fabs(fabs(fmod(f - threshold, threshold*4))

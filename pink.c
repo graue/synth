@@ -36,14 +36,11 @@ static void pink(void)
 	for (i = 0; i < 14; i++)
 		b[i] = 0.0f;
 
-	for (;;)
+	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
 		int o;
 		left = !left;
 		o = left ? 7 : 0;
-
-		if (fread(&f, sizeof f, 1, stdin) < 1)
-			return;
 
 		white = f;
 
