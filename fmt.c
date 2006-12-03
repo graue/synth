@@ -5,6 +5,7 @@
 
 /* fmt: convert floats on stdin to their final format */
 
+static int monodst = 0;
 static void conv_u8(void);
 static void conv_s8(void);
 static void conv_16(void);
@@ -24,9 +25,11 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "-16")) fmt = 2; /* 16-bit signed */
 		else if (!strcmp(argv[i], "-24")) fmt = 3; /* 24-bit signed */
 		else if (!strcmp(argv[i], "-32")) fmt = 4; /* 32-bit signed */
+		else if (!strcmp(argv[i], "-mono")) monodst = 1;
 		else if (!strcmp(argv[i], "-help"))
 		{
-			fprintf(stderr, "options: -u8, -s8, -16, -24, -32\n");
+			fprintf(stderr, "options: -u8, -s8, -16, -24, -32, "
+				"-mono\n");
 			exit(0);
 		}
 	}
@@ -46,12 +49,26 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
+/* returns 1 on success */
+static int nextsample(float *dst)
+{
+	if (monodst)
+	{
+		float f[2];
+		if (fread(f, sizeof f[0], 2, stdin) < 2)
+			return 0;
+		*dst = (f[0] + f[1]) / 2.0f;
+		return 1;
+	}
+	return fread(dst, sizeof *dst, 1, stdin) == 1;
+}
+
 static void conv_u8(void)
 {
 	float f;
 	unsigned char s;
 
-	while (fread(&f, sizeof f, 1, stdin) == 1)
+	while (nextsample(&f))
 	{
 		/* squish range from -32768 .. 32767 to -128 .. 127 */
 		f /= 256.0f;
@@ -75,7 +92,7 @@ static void conv_s8(void)
 	float f;
 	signed char s;
 
-	while (fread(&f, sizeof f, 1, stdin) == 1)
+	while (nextsample(&f))
 	{
 		/* squish range from -32768 .. 32767 to -128 .. 127 */
 		f /= 256.0f;
@@ -96,7 +113,7 @@ static void conv_16(void)
 	float f;
 	short s;
 
-	while (fread(&f, sizeof f, 1, stdin) == 1)
+	while (nextsample(&f))
 	{
 		/* clip */
 		if (f < -32768.0f)
@@ -118,7 +135,7 @@ static void conv_24(void)
 
 	sw = (unsigned char *)&s;
 
-	while (fread(&f, sizeof f, 1, stdin) == 1)
+	while (nextsample(&f))
 	{
 		d = f;
 
@@ -153,7 +170,7 @@ static void conv_32(void)
 	double d;
 	int s;
 
-	while (fread(&f, sizeof f, 1, stdin) == 1)
+	while (nextsample(&f))
 	{
 		/* clip */
 		if (f < -32768.0f)
