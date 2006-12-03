@@ -4,9 +4,10 @@ unfmt converts a raw waveform using integer samples to
 float, and fmt does the reverse. They assume the endianness
 of the integer samples matches that of the CPU.
 
-softsat is a really good limiter that combined with amp can
-be used for mastering purposes. Most other things are just
-toys. Example usage:
+As an example of how to use these programs, you can make a
+song 6 dB louder (2x the amplitude) as follows. softsat, a
+really good saturator/limiter worthy of mastering use, is in
+there to prevent clipping:
 
 unfmt -16 <mysong.raw | amp -vol 2.0 | softsat | fmt -16 >louder.raw
 
@@ -20,6 +21,55 @@ and "cd bin" and "../build ../*.c".
 
 For a big-endian system, add -DBIG_ENDIAN to the gcc
 invocation line in the build script. This is required for
-unfmt and fmt to work right with 24-bit audio (which hasn't
-been tested, so if it still doesn't work, email me:
-graue@oceanbase.org).
+unfmt and fmt to work right with 24-bit audio. (I don't have
+a big-endian system to test on, so if it still doesn't work,
+email me: graue@oceanbase.org).
+
+
+To find out what options a program takes, run it with the
+"-help" option.
+
+Generators [input nothing, output floats]:
+---
+envelope: with -generate option or if stdin is a tty
+octagon: octagon wave (between square & tri) oscillator
+rossler: rossler oscillator
+sine: sine wave oscillator
+square: square wave oscillator
+tri: triangle wave oscillator
+white: white noise
+
+Time-stretching effects [input and output floats]:
+---
+stretch: time and pitch stretcher, or resampler
+
+Effects [input and output floats]:
+---
+amp: gainer
+clip: clipper
+comp: peak/RMS compressor
+delay: delay line
+envelope: applies an envelope to input
+filter: IIR biquad filter (high, low, & bandpass, & more)
+foldback: foldback distortion
+gate: a simple "gate"
+limit: poor limiter
+midside: left/right -> mid/side stereo converter
+pan: panner
+pink: FIR filter designed to convert white to pink noise
+reverb: a brute-force, unsophisticated but useful reverb
+sfclip2: soft-clipper
+shape: waveshaper
+sine: with -modfreq option, input modulates sine frequency
+sineclip: weird noise effect, clips to shape of sine wave
+softclip: soft-clipper
+softsat: soft saturator / limiter
+
+Mixers [input floats from files, output floats]:
+---
+mix: sum waves
+
+Utilities [other kinds of input and output]:
+---
+fmt: converts floats to integer samples
+unfmt: converts integer samples to floats
