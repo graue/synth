@@ -114,7 +114,7 @@ static void conv_24(void)
 
 	for (;;)
 	{
-#ifndef BIG_ENDIAN
+#if !WORDS_BIGENDIAN
 		if ((c = getchar()) == EOF) return;
 		sr[0] = c;
 #endif
@@ -122,7 +122,7 @@ static void conv_24(void)
 		sr[1] = c;
 		if ((c = getchar()) == EOF) return;
 		sr[2] = c;
-#ifdef BIG_ENDIAN
+#if WORDS_BIGENDIAN
 		if ((c = getchar()) == EOF) return;
 		sr[3] = c;
 		sr[0] = (sr[1] & 0x80) ? 0xff : 0;

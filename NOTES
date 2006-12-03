@@ -19,7 +19,7 @@ Type "./build *.c" to make them all. To put the binaries in
 a separate directory, you can do something like "mkdir bin"
 and "cd bin" and "../build ../*.c".
 
-For a big-endian system, add -DBIG_ENDIAN to the gcc
+For a big-endian system, add -DWORDS_BIGENDIAN=1 to the gcc
 invocation line in the build script. This is required for
 unfmt and fmt to work right with 24-bit audio. (I don't have
 a big-endian system to test on, so if it still doesn't work,

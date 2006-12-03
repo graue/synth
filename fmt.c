@@ -150,7 +150,7 @@ static void conv_24(void)
 		else if (d < -8388608.0f) d = -8388608.f;
 
 		s = (int)d;
-#ifdef BIG_ENDIAN
+#if WORDS_BIGENDIAN
 		if (sw[0] == 0xff) putc(sw[1] | 0x80, stdout);
 		else putc(sw[1], stdout);
 		putc(sw[2], stdout);
