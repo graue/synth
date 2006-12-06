@@ -17,10 +17,10 @@ int main(int argc, char *argv[])
 	/* read options */
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-range") && ++i < argc)
-			range = atof(argv[i]);
-		else if (!strcmp(argv[i], "-hardness") && ++i < argc)
-			gradation = atof(argv[i]);
+		if (!strcmp(argv[i], "-range") && i+1 < argc)
+			range = atof(argv[++i]);
+		else if (!strcmp(argv[i], "-hardness") && i+1 < argc)
+			gradation = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -range arg, -hardness arg\n");

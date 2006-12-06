@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
 
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-vol") && ++i < argc)
-			vol = atof(argv[i]);
+		if (!strcmp(argv[i], "-vol") && i+1 < argc)
+			vol = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -vol multiplicand\n");

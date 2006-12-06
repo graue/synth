@@ -17,12 +17,12 @@ int main(int argc, char *argv[])
 
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-amp") && ++i < argc)
-			amp = atof(argv[i]);
-		else if (!strcmp(argv[i], "-freq") && ++i < argc)
-			freq = atof(argv[i]);
-		else if (!strcmp(argv[i], "-dc") && ++i < argc)
-			dc = atof(argv[i]);
+		if (!strcmp(argv[i], "-amp") && i+1 < argc)
+			amp = atof(argv[++i]);
+		else if (!strcmp(argv[i], "-freq") && i+1 < argc)
+			freq = atof(argv[++i]);
+		else if (!strcmp(argv[i], "-dc") && i+1 < argc)
+			dc = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -amp amplitude, "

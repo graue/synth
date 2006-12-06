@@ -20,14 +20,14 @@ int main(int argc, char *argv[])
 
 	for (i = 1; i < argc; i++)
 	{
-		if (strcmp(argv[i], "-threshdB") == 0 && ++i < argc)
-			threshdB = atof(argv[i]);
-		else if (strcmp(argv[i], "-ratio") == 0 && ++i < argc)
-			ratio = atof(argv[i]);
-		else if (strcmp(argv[i], "-attack") == 0 && ++i < argc)
-			attack = atof(argv[i]);
-		else if (strcmp(argv[i], "-release") == 0 && ++i < argc)
-			release = atof(argv[i]);
+		if (strcmp(argv[i], "-threshdB") == 0 && i+1 < argc)
+			threshdB = atof(argv[++i]);
+		else if (strcmp(argv[i], "-ratio") == 0 && i+1 < argc)
+			ratio = atof(argv[++i]);
+		else if (strcmp(argv[i], "-attack") == 0 && i+1 < argc)
+			attack = atof(argv[++i]);
+		else if (strcmp(argv[i], "-release") == 0 && i+1 < argc)
+			release = atof(argv[++i]);
 		else if (strcmp(argv[i], "-rms") == 0)
 			rms = 1;
 		else if (strcmp(argv[i], "-help") == 0)

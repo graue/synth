@@ -24,10 +24,10 @@ int main(int argc, char *argv[])
 
 	for (i = 1; i < argc; i++)
 	{
-		if (strcmp(argv[i], "-len") == 0 && ++i < argc)
-			len = atof(argv[i]);
-		else if (strcmp(argv[i], "-mag") == 0 && ++i < argc)
-			mag = atof(argv[i]);
+		if (strcmp(argv[i], "-len") == 0 && i+1 < argc)
+			len = atof(argv[++i]);
+		else if (strcmp(argv[i], "-mag") == 0 && i+1 < argc)
+			mag = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -len ms, -mag sampval\n");

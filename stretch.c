@@ -17,8 +17,8 @@ int main(int argc, char *argv[])
 
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-rate") && ++i < argc)
-			rate = strtod(argv[i], NULL);
+		if (!strcmp(argv[i], "-rate") && i+1 < argc)
+			rate = strtod(argv[++i], NULL);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -rate speedratio\n");

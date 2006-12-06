@@ -16,10 +16,10 @@ int main(int argc, char *argv[])
 	/* read options */
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-amp") && ++i < argc)
-			amp = atof(argv[i]);  /* amplitude from 0 to 1 */
-		else if (!strcmp(argv[i], "-len") && ++i < argc)
-			len = atof(argv[i]) / 1000.0f * RATE; /* length in ms */
+		if (!strcmp(argv[i], "-amp") && i+1 < argc)
+			amp = atof(argv[++i]);  /* amplitude from 0 to 1 */
+		else if (!strcmp(argv[i], "-len") && i+1 < argc)
+			len = atof(argv[++i]) / 1000.0f * RATE; /* len in ms */
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -amp arg, -len arg\n");

@@ -19,12 +19,12 @@ int main(int argc, char *argv[])
 	/* read options */
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-freq") && ++i < argc)
-			freq = atof(argv[i]); /* frequency of the wave */
-		else if (!strcmp(argv[i], "-amp") && ++i < argc)
-			amp = atof(argv[i]);  /* amplitude from 0 to 1 */
-		else if (!strcmp(argv[i], "-len") && ++i < argc)
-			len_ms = atof(argv[i]); /* length in ms */
+		if (!strcmp(argv[i], "-freq") && i+1 < argc)
+			freq = atof(argv[++i]); /* frequency of the wave */
+		else if (!strcmp(argv[i], "-amp") && i+1 < argc)
+			amp = atof(argv[++i]);  /* amplitude from 0 to 1 */
+		else if (!strcmp(argv[i], "-len") && i+1 < argc)
+			len_ms = atof(argv[++i]); /* length in ms */
 		else if (!strcmp(argv[i], "-mono"))
 			mono = 1;
 		else if (!strcmp(argv[i], "-help"))

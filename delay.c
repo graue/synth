@@ -16,10 +16,10 @@ int main(int argc, char *argv[])
 
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-len") && ++i < argc)
-			len = atof(argv[i]);
-		if (!strcmp(argv[i], "-feedback") && ++i < argc)
-			feedback = atof(argv[i]);
+		if (!strcmp(argv[i], "-len") && i+1 < argc)
+			len = atof(argv[++i]);
+		if (!strcmp(argv[i], "-feedback") && i+1 < argc)
+			feedback = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -len ms, -feedback "

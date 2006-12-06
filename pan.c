@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
 	/* read options */
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-angle") && ++i < argc)
-			angle = atof(argv[i]);
+		if (!strcmp(argv[i], "-angle") && i+1 < argc)
+			angle = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -angle arg (-180 to 180)\n");

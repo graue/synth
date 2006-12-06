@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
 
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-threshold") && ++i < argc)
-			thresh = atof(argv[i]) * 32768.0f;
+		if (!strcmp(argv[i], "-threshold") && i+1 < argc)
+			thresh = atof(argv[++i]) * 32768.0f;
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -threshold amplitude\n");

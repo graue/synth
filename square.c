@@ -26,14 +26,14 @@ int main(int argc, char *argv[])
 	/* read options */
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-freq") && ++i < argc)
-			freq = atof(argv[i]); /* frequency of the wave */
-		else if (!strcmp(argv[i], "-amp") && ++i < argc)
-			amp = atof(argv[i]);  /* amplitude from 0 to 1 */
-		else if (!strcmp(argv[i], "-len") && ++i < argc)
-			len = atof(argv[i]) / 1000.0f * RATE; /* length in ms */
-		else if (!strcmp(argv[i], "-phase") && ++i < argc)
-			phase = atof(argv[i]); /* phase in degrees */
+		if (!strcmp(argv[i], "-freq") && i+1 < argc)
+			freq = atof(argv[++i]); /* frequency of the wave */
+		else if (!strcmp(argv[i], "-amp") && i+1 < argc)
+			amp = atof(argv[++i]);  /* amplitude from 0 to 1 */
+		else if (!strcmp(argv[i], "-len") && i+1 < argc)
+			len = atof(argv[++i]) / 1000.0f * RATE; /* length in ms */
+		else if (!strcmp(argv[i], "-phase") && i+1 < argc)
+			phase = atof(argv[++i]); /* phase in degrees */
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -freq arg, -amp arg, -len "
