@@ -53,7 +53,6 @@ int main(int argc, char *argv[])
 			&& ++i < argc)
 		{
 			f0 = atof(argv[i]);
-			f0 = CLAMP(1.0f, f0, RATE * 0.499f);
 		}
 		else if ((strcmp(argv[i], "-dbgain") == 0
 			|| strcmp(argv[i], "-dBgain") == 0)
