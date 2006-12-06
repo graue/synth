@@ -50,37 +50,38 @@ int main(int argc, char *argv[])
 			|| strcmp(argv[i], "-center") == 0
 			|| strcmp(argv[i], "-corner") == 0
 			|| strcmp(argv[i], "-midpoint") == 0)
-			&& ++i < argc)
+			&& i+1 < argc)
 		{
-			f0 = atof(argv[i]);
+			f0 = atof(argv[++i]);
 		}
 		else if ((strcmp(argv[i], "-dbgain") == 0
 			|| strcmp(argv[i], "-dBgain") == 0)
-			&& ++i < argc)
+			&& i+1 < argc)
 		{
-			dBgain = atof(argv[i]);
+			dBgain = atof(argv[++i]);
 			dBgain = CLAMP(-100.0f, q, 100.0f);
 		}
-		else if (strcmp(argv[i], "-q") == 0 && ++i < argc)
+		else if (strcmp(argv[i], "-q") == 0 && i+1 < argc)
 		{
-			q = atof(argv[i]);
+			q = atof(argv[++i]);
 			q = CLAMP(0.01f, q, 100.0f);
 			usewhich = USE_Q;
 		}
-		else if (strcmp(argv[i], "-bw") == 0 && ++i < argc)
+		else if (strcmp(argv[i], "-bw") == 0 && i+1 < argc)
 		{
-			bw = atof(argv[i]);
+			bw = atof(argv[++i]);
 			bw = CLAMP(0.01f, bw, 100.0f);
 			usewhich = USE_BW;
 		}
-		else if (strcmp(argv[i], "-slope") == 0 && ++i < argc)
+		else if (strcmp(argv[i], "-slope") == 0 && i+1 < argc)
 		{
-			slope = atof(argv[i]);
+			slope = atof(argv[++i]);
 			slope = CLAMP(0.01f, slope, 100.0f);
 			usewhich = USE_SLOPE;
 		}
-		else if (strcmp(argv[i], "-type") == 0 && ++i < argc)
+		else if (strcmp(argv[i], "-type") == 0 && i+1 < argc)
 		{
+			i++;
 			if (strcmp(argv[i], "hp") == 0
 				|| strcmp(argv[i], "highpass") == 0
 				|| strcmp(argv[i], "hpf") == 0)
