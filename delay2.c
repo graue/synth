@@ -107,5 +107,6 @@ static void delay(float len, float feedback, float lfolen, float lfoamp,
 		side = !side;
 	}
 
-	free(buf);
+	free(buf[0]);
+	free(buf[1]);
 }
