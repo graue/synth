@@ -156,10 +156,10 @@ static void conv_24(void)
 		putc(sw[2], stdout);
 		putc(sw[3], stdout);
 #else
+		putc(sw[0], stdout);
+		putc(sw[1], stdout);
 		if (sw[3] == 0xff) putc(sw[2] | 0x80, stdout);
 		else putc(sw[2], stdout);
-		putc(sw[1], stdout);
-		putc(sw[0], stdout);
 #endif
 	}
 }
