@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 static void envelope(float start, envpoint_t *envs, int numenvs, int apply)
 {
 	float amp = start, d_amp, end = start;
-	float f = 1.0f;
+	float f[2] = {1.0f, 1.0f};
 	int stage, pos, len;
 
 	for (stage = 0; stage < numenvs; stage++)
@@ -77,15 +77,18 @@ static void envelope(float start, envpoint_t *envs, int numenvs, int apply)
 		for (pos = 0; pos < len; pos++)
 		{
 			if (!apply)
-				f = amp;
-			else if (fread(&f, sizeof f, 1, stdin) < 1)
+				f[0] = f[1] = amp;
+			else if (fread(f, sizeof f[0], 2, stdin) < 2)
 				return;
 			else
-				f *= amp;
+			{
+				f[0] *= amp;
+				f[1] *= amp;
+			}
 
 			amp += d_amp;
 
-			if (fwrite(&f, sizeof f, 1, stdout) < 1)
+			if (fwrite(f, sizeof f[0], 2, stdout) < 2)
 				return;
 		}
 	}
