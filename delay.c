@@ -5,12 +5,13 @@
 
 /* delay.c: a delay line */
 
-static void delay(int len_in_smp, float feedback);
+static void delay(int len_in_smp, float feedback, float wetout);
 
 int main(int argc, char *argv[])
 {
 	float len = 50.0f;
 	float feedback = 37.5f;
+	float wetout = 100.0f;
 	int len_in_smp;
 	int i;
 
@@ -20,10 +21,12 @@ int main(int argc, char *argv[])
 			len = atof(argv[++i]);
 		if (!strcmp(argv[i], "-feedback") && i+1 < argc)
 			feedback = atof(argv[++i]);
+		if (!strcmp(argv[i], "-wetout") && i+1 < argc)
+			wetout = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -len ms, -feedback "
-				"percent\n");
+				"percent, -wetout percent\n");
 			exit(0);
 		}
 	}
@@ -34,18 +37,21 @@ int main(int argc, char *argv[])
 		len_in_smp = 1;
 
 	SET_BINARY_MODE
-	delay(len_in_smp, feedback);
+	delay(len_in_smp, feedback, wetout);
 	return 0;
 }
 
-static void delay(int len_in_smp, float feedback)
+static void delay(int len_in_smp, float feedback, float wetout)
 {
 	float *buf;
 	float f, f0;
 	int i, bufpos = 0;
 
 	len_in_smp *= 2; /* account for stereo */
-	feedback /= 100.0f; /* convert percentage to ratio */
+
+	/* convert percentages to ratios */
+	feedback /= 100.0f;
+	wetout /= 100.0f;
 
 	buf = malloc(sizeof *buf * len_in_smp);
 	if (buf == NULL)
@@ -58,7 +64,7 @@ static void delay(int len_in_smp, float feedback)
 
 	while (fread(&f0, sizeof f0, 1, stdin) == 1)
 	{
-		f = f0 + buf[bufpos];
+		f = f0 + wetout*buf[bufpos];
 
 		if (fwrite(&f, sizeof f, 1, stdout) < 1)
 			return;
