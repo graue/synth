@@ -6,13 +6,14 @@
 
 /* delay2.c: an overcomplicated delay effect */
 
-static void delay(float len, float feedback, float lfolen, float lfoamp,
-	float lfoinitphase, int lfomod);
+static void delay(float len, float feedback, float wetout, float lfolen,
+	float lfoamp, float lfoinitphase, int lfomod);
 
 int main(int argc, char *argv[])
 {
 	float len = 50.0f; /* 50 ms */
 	float feedback = 37.5f; /* 37.5% */
+	float wetout = 100.0f; /* 100% */
 	float lfolen = 100.0f; /* 100 ms */
 	float lfoamp = 0.0f; /* 0% */
 	float lfoinitphase = 0.0f; /* 0.0 out of 1.0 */
@@ -25,6 +26,8 @@ int main(int argc, char *argv[])
 			len = atof(argv[++i]);
 		if (!strcmp(argv[i], "-feedback") && i+1 < argc)
 			feedback = atof(argv[++i]);
+		if (!strcmp(argv[i], "-wetout") && i+1 < argc)
+			wetout = atof(argv[++i]);
 		if (!strcmp(argv[i], "-lfolen") && i+1 < argc)
 			lfolen = atof(argv[++i]);
 		if (!strcmp(argv[i], "-lfoamp") && i+1 < argc)
@@ -36,19 +39,20 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -len ms, -feedback "
-				"percent, -lfolen ms, -lfoamp percent,\n");
-			fprintf(stderr, "-lfophase 0to1, -lfomod\n");
+				"percent, -wetout percent,\n");
+			fprintf(stderr, "-lfolen ms, -lfoamp percent, "
+				"-lfophase 0to1, -lfomod\n");
 			exit(0);
 		}
 	}
 
 	SET_BINARY_MODE
-	delay(len, feedback, lfolen, lfoamp, lfoinitphase, lfomod);
+	delay(len, feedback, wetout, lfolen, lfoamp, lfoinitphase, lfomod);
 	return 0;
 }
 
-static void delay(float len, float feedback, float lfolen, float lfoamp,
-	float lfoinitphase, int lfomod)
+static void delay(float len, float feedback, float wetout,
+	float lfolen, float lfoamp, float lfoinitphase, int lfomod)
 {
 	float *buf[2];
 	float f, f0[2] = {0.0f, 0.0f};
@@ -88,7 +92,7 @@ static void delay(float len, float feedback, float lfolen, float lfoamp,
 	efflen = len * (1.0f + lfoamp*sin(lfophase));
 	while (fread(&f0[side], sizeof f0[side], 1, stdin) == 1)
 	{
-		f = f0[side] + buf[side][bufpos];
+		f = f0[side] + wetout*buf[side][bufpos];
 
 		if (fwrite(&f, sizeof f, 1, stdout) < 1)
 			return;
