@@ -13,7 +13,7 @@ typedef struct
 
 static void envelope(float start, envpoint_t *envs, int numenvs, int apply);
 
-#define MAXENVS 40
+#define MAXENVS 400
 
 int main(int argc, char *argv[])
 {
