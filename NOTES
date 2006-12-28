@@ -69,6 +69,7 @@ softsat: soft saturator / limiter
 Mixers [input floats from files, output floats]:
 ---
 mix: sum waves
+mul: multiply waves
 
 Utilities [other kinds of input and output]:
 ---
