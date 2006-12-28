@@ -62,11 +62,11 @@ static void conv_u8(void)
 		s = (unsigned char)c;
 		f = s;
 
-		/* move range from 0 .. 255 to -128 .. 127 */
+		/* Move range from [0, 255] to [-128, 127]. */
 		f -= 128.0f;
 
-		/* expand range from -128 .. 127 to -32768 .. 32767 */
-		f *= 256.0f;
+		/* Squish from [-128, 127] to [-1, 1). */
+		f /= 128.0f;
 
 		PERCHANNEL(fwrite(&f, sizeof f, 1, stdout))
 	}
@@ -83,8 +83,8 @@ static void conv_s8(void)
 		s = (signed char)c;
 		f = s;
 
-		/* expand range from -128 .. 127 to -32768 .. 32767 */
-		f *= 256.0f;
+		/* Squish from [-128, 127] to [-1, 1). */
+		f /= 128.0f;
 
 		PERCHANNEL(fwrite(&f, sizeof f, 1, stdout))
 	}
@@ -98,6 +98,10 @@ static void conv_16(void)
 	while (fread(&s, sizeof s, 1, stdin) == 1)
 	{
 		f = s;
+
+		/* Squish from [-32768, 32767] to [-1, 1). */
+		f /= 32768.0f;
+
 		PERCHANNEL(fwrite(&f, sizeof f, 1, stdout))
 	}
 }
@@ -132,9 +136,8 @@ static void conv_24(void)
 
 		d = (double)s;
 
-		/* squish range of samples from -8388608 .. 8388607
-		   to -32768 .. 32767 */
-		d /= 256.0f;
+		/* Squish from [-8388608, 8388607] to [-1, 1). */
+		d /= 8388608.0f;
 
 		f = (float)d;
 
@@ -152,9 +155,8 @@ static void conv_32(void)
 	{
 		d = (double)s;
 
-		/* squish range of samples from -2147483648 .. 2147483647
-		   to -32768 .. 32767 */
-		d /= 32768.0f;
+		/* Squish from [-2147483648, 2147483647] to [-1, 1). */
+		d /= 2147483648.0f;
 
 		f = (float)d;
 

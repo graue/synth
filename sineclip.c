@@ -43,9 +43,6 @@ static void sineclip(float amp, float freq, float dc)
 	float phase = 0.0f;
 	const float phase_inc = RATE / (2*M_PI*freq);
 
-	amp *= 32768.0f;
-	dc *= 32768.0f;
-
 	while (fread(f, sizeof f, 1, stdin) == 1)
 	{
 		sinelimit = sin(phase)*amp + dc;

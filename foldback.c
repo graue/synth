@@ -10,13 +10,13 @@ static void foldback(float threshold);
 
 int main(int argc, char *argv[])
 {
-	float thresh = 32768.0f;
+	float thresh = 1.0f;
 	int i;
 
 	for (i = 1; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "-threshold") && i+1 < argc)
-			thresh = atof(argv[++i]) * 32768.0f;
+			thresh = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -threshold amplitude\n");

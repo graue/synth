@@ -5,24 +5,20 @@
 
 /* mix.c: mix waveforms */
 
-#define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 #define MAXINPUTS 288
 static void mix(FILE **inputs, int numfiles);
 
 int main(int argc, char *argv[])
 {
-	float max = 32768.0f;
 	int i;
 	FILE *inputs[MAXINPUTS];
 	int numfiles = 0;
 
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-amp") && i+1 < argc)
-			max = atof(argv[++i]) * 32768.0f;
-		else if (!strcmp(argv[i], "-help"))
+		if (!strcmp(argv[i], "-help"))
 		{
-			fprintf(stderr, "options: -amp overall_mul\n");
+			fprintf(stderr, "options: none\n");
 			fprintf(stderr, "Also list 1 to %d input filenames.\n",
 				MAXINPUTS);
 			exit(0);

@@ -48,7 +48,6 @@ int main(int argc, char *argv[])
 	phase = CLAMP(0.0f, phase, 359.99f);
 
 	/* convert options */
-	amp *= 32768.0f;
 	period = RATE / freq;
 
 	SET_BINARY_MODE

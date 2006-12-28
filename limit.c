@@ -15,13 +15,13 @@ static void limit(float max);
 
 int main(int argc, char *argv[])
 {
-	float max = 32768.0f;
+	float max = 1.0f;
 	int i;
 
 	for (i = 1; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "-amp") && i+1 < argc)
-			max = atof(argv[++i]) * 32768.0f;
+			max = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -amp arg\n");
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	max = CLAMP(256.0f, max, 65536.0f);
+	max = CLAMP(0.01f, max, 2.0f);
 
 	SET_BINARY_MODE
 	limit(max);

@@ -9,13 +9,13 @@ static void clip(float max, float min);
 
 int main(int argc, char *argv[])
 {
-	float max = 32768.0f;
+	float max = 1.0f;
 	int i;
 
 	for (i = 1; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "-amp") && i+1 < argc)
-			max = atof(argv[++i]) * 32768.0f;
+			max = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -amp amplitude\n");

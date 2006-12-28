@@ -39,8 +39,7 @@ int main(int argc, char *argv[])
 
 static float shapeval(float val, float r, float g)
 {
-	float x;
-	x = val / 32768.0f;
+	float x = val;
 
 	if (x < -r/(g+1))
 		x = x/g - r/(g+1) * (g-1/g);
@@ -49,7 +48,7 @@ static float shapeval(float val, float r, float g)
 	else
 		x *= g;
 
-	return x * 32768.0f;
+	return x;
 }
 
 static void shape(float range, float gradation)

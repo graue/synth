@@ -19,7 +19,7 @@ static void gate(float len, float mag);
 int main(int argc, char *argv[])
 {
 	float len = 50.0f;
-	float mag = 0.001f;
+	float mag = 0.00000001f;
 	int i;
 
 	for (i = 1; i < argc; i++)

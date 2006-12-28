@@ -70,13 +70,13 @@ static void conv_u8(void)
 
 	while (nextsample(&f))
 	{
-		/* squish range from -32768 .. 32767 to -128 .. 127 */
-		f /= 256.0f;
+		/* Expand range from [-1, 1] to about [-128, 127]. */
+		f *= 128.0f;
 
-		/* move range from -128 .. 127 to 0 .. 255 */
+		/* Move range from -128 .. 127 to 0 .. 255. */
 		f += 128.0f;
 
-		/* clip */
+		/* Clip. */
 		if (f < 0.0f)
 			f = 0.0f;
 		else if (f > 255.0f)
@@ -94,10 +94,10 @@ static void conv_s8(void)
 
 	while (nextsample(&f))
 	{
-		/* squish range from -32768 .. 32767 to -128 .. 127 */
-		f /= 256.0f;
+		/* Expand range from [-1, 1] to about [-128, 127]. */
+		f *= 128.0f;
 
-		/* clip */
+		/* Clip. */
 		if (f < -128.0f)
 			f = -128.0f;
 		else if (f > 127.0f)
@@ -115,7 +115,10 @@ static void conv_16(void)
 
 	while (nextsample(&f))
 	{
-		/* clip */
+		/* Expand range from [-1, 1] to about [-32768, 32767]. */
+		f *= 32768.0f;
+
+		/* Clip. */
 		if (f < -32768.0f)
 			f = -32768.0f;
 		else if (f > 32767.0f)
@@ -139,11 +142,8 @@ static void conv_24(void)
 	{
 		d = f;
 
-		/*
-		 * Expand range of samples from -32768 .. 32767
-		 * to -8388608 .. 8388607.
-		 */
-		d *= 256.0f;
+		/* Expand from [-1, 1] to about [-8388608, 8388607]. */
+		d *= 8388608.0f;
 
 		/* Clip. */
 		if (d > 8388607.0f) d = 8388607.0f;
@@ -172,19 +172,14 @@ static void conv_32(void)
 
 	while (nextsample(&f))
 	{
-		/* clip */
-		if (f < -32768.0f)
-			f = -32768.0f;
-		else if (f > 32767.0f)
-			f = 32767.0f;
-
 		d = f;
 
-		/*
-		 * Expand range of samples from -32768 .. 32767
-		 * to -2147483648 .. 2147483647.
-		 */
-		d *= 32768.0f;
+		/* Expand from [-1, 1] to about [-2147483648, 2147483647]. */
+		d *= 2147483648.0f;
+
+		/* Clip. */
+		if (d > 2147483647.0f) d = 2147483647.0f;
+		else if (d < -2147483648.0f) d = -2147483648.f;
 
 		s = (int)d;
 		fwrite(&s, sizeof s, 1, stdout);

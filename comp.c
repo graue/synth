@@ -88,10 +88,8 @@ static void compress(float threshdB, float ratio, float attack, float release,
 			float avg;
 
 			/* square input */
-			rect[0] = f[0] / 32768.0f;
-			rect[0] *= rect[0];
-			rect[1] = f[1] / 32768.0f;
-			rect[1] *= rect[1];
+			rect[0] = f[0] * f[0];
+			rect[1] = f[0] * f[0];
 			avg = (rect[0] + rect[1]) / 2.0f;
 			avg += DC_OFFSET; /* prevent denormal */
 			rmsstate = env_run(rmscoef, avg, rmsstate);
@@ -107,7 +105,6 @@ static void compress(float threshdB, float ratio, float attack, float release,
 			rect[0] = fabs(f[0]);
 			rect[1] = fabs(f[1]);
 			link = rect[0] > rect[1] ? rect[0] : rect[1];
-			link /= 32768.0f;
 		}
 
 		link += DC_OFFSET; /* to avoid log(0) */

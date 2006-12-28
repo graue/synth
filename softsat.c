@@ -56,7 +56,6 @@ static void softsat(float range, float gradation)
 	float gradinv;
 
 	gradinv = 1.0f/gradation;
-	range *= 32768.0f;
 
 	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{

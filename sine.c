@@ -42,7 +42,6 @@ int main(int argc, char *argv[])
 	startphase = CLAMP(0.0f, startphase, 359.99f);
 
 	/* convert options */
-	amp *= 32768.0f;
 	startphase = startphase * M_PI / 180.0f;
 
 	phase = startphase;
@@ -59,7 +58,7 @@ int main(int argc, char *argv[])
 			if (fread(inputs, sizeof inputs[0], 2, stdin) < 2)
 				avg = 0.0f;
 			else
-				avg = (inputs[0] + inputs[1] / 2) / 32768.0f;
+				avg = (inputs[0] + inputs[1] / 2);
 			phase += avg;
 		}
 

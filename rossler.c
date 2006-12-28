@@ -56,7 +56,6 @@ static void rossler(float freq, float amp, float len_ms, int mono)
 	b = 0.2f;
 	c = 10.0f;
 	x = y = z = 1.0f;
-	amp *= 32768.0f;
 
 	for (n = 0; n < len; n++)
 	{

@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
 	amp = CLAMP(0.0f, amp, 1.0f);
 
 	/* convert options */
-	amp *= 32768.0f;
 	range = amp * 2;
 
 	srand((unsigned int)time(NULL));
