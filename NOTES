@@ -49,6 +49,7 @@ amp: gainer
 clip: clipper
 comp: peak/RMS compressor
 delay: delay line
+delay2: delay line with lfo
 envelope: applies an envelope to input
 filter: IIR biquad filter (high, low, & bandpass, & more)
 foldback: foldback distortion
