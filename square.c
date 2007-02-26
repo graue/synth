@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
 
 	/* convert options */
 	period = RATE / freq;
+	phase *= period;
 
 	SET_BINARY_MODE
 	for (n = 0; n < len; n++)
