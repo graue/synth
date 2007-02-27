@@ -1,33 +1,39 @@
 Internally these programs use floats.
 
-unfmt converts a raw waveform using integer samples to
-float, and fmt does the reverse. They assume the endianness
-of the integer samples matches that of the CPU.
+unfmt converts a raw waveform using integer
+samples to float, and fmt does the reverse. They
+assume the endianness of the integer samples
+matches that of the CPU.
 
-As an example of how to use these programs, you can make a
-song 6 dB louder (2x the amplitude) as follows. softsat, a
-really good saturator/limiter worthy of mastering use, is in
-there to prevent clipping:
+As an example of how to use these programs, you
+can make a song 6 dB louder (2x the amplitude) as
+follows. softsat, a really good saturator/limiter
+worthy of mastering use, is in there to prevent
+clipping:
 
 unfmt -16 <mysong.raw | amp -vol 2.0 | softsat | fmt -16 >louder.raw
 
 This code is copyright-free.
 
 
-You can build each program with the provided "build" script.
-Type "./build *.c" to make them all. To put the binaries in
-a separate directory, you can do something like "mkdir bin"
-and "cd bin" and "../build ../*.c".
 
-For a big-endian system, add -DWORDS_BIGENDIAN=1 to the gcc
-invocation line in the build script. This is required for
-unfmt and fmt to work right with 24-bit audio. (I don't have
-a big-endian system to test on, so if it still doesn't work,
+You can build each program with the provided
+"build" script.  Type "./build *.c" to make them
+all. To put the binaries in a separate directory,
+you can do something like "mkdir bin" and "cd bin"
+and "../build ../*.c".
+
+For a big-endian system, add -DWORDS_BIGENDIAN=1
+to the gcc invocation line in the build script.
+This is required for unfmt and fmt to work right
+with 24-bit audio. (I don't have a big-endian
+system to test on, so if it still doesn't work,
 email me: graue@oceanbase.org).
 
 
-To find out what options a program takes, run it with the
-"-help" option.
+
+To find out what options a program takes, run it
+with the "-help" option.
 
 Generators [input nothing, output floats]:
 ---
