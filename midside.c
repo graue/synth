@@ -33,8 +33,8 @@ static void midside(void)
 
 	while (fread(in, sizeof in[0], 2, stdin) == 2)
 	{
+		out[0] = in[0] + in[1];
 		out[1] = in[0] - in[1];
-		out[0] = in[0] - out[1]/2;
 
 		if (fwrite(out, sizeof out[0], 2, stdout) < 1)
 			return;
