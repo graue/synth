@@ -89,7 +89,7 @@ static void compress(float threshdB, float ratio, float attack, float release,
 
 			/* square input */
 			rect[0] = f[0] * f[0];
-			rect[1] = f[0] * f[0];
+			rect[1] = f[1] * f[1];
 			avg = (rect[0] + rect[1]) / 2.0f;
 			avg += DC_OFFSET; /* prevent denormal */
 			rmsstate = env_run(rmscoef, avg, rmsstate);
