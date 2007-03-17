@@ -13,13 +13,13 @@ typedef struct
 
 static void envelope(float start, envpoint_t *envs, int numenvs, int apply);
 
-#define MAXENVS 400
+#define MAXPTS 400
 
 int main(int argc, char *argv[])
 {
 	float start = 1.0f;
 	int apply;
-	envpoint_t envs[MAXENVS];
+	envpoint_t envs[MAXPTS];
 	int numenvs = 0;
 	int i;
 	int startset = 0;
@@ -43,10 +43,10 @@ int main(int argc, char *argv[])
 			startset = 1;
 			start = atof(argv[i]);
 		}
-		else if (numenvs == MAXENVS)
+		else if (numenvs == MAXPTS)
 		{
-			fprintf(stderr, "warning: too many envelopes "
-				"(hit limit %d), ignoring rest\n", MAXENVS);
+			fprintf(stderr, "warning: too many points "
+				"(hit limit %d), ignoring rest\n", MAXPTS);
 		}
 		else if (i + 1 < argc)
 		{
