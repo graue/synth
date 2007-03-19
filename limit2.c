@@ -118,7 +118,7 @@ static void limit(float threshdB, float attack, float release)
 		 * Has the peak been held as long as it is allowed to be
 		 * or is the new sample greater than the peak?
 		 */
-		if (peakheldtime >= peakholdlen || link > peak)
+		if (++peakheldtime >= peakholdlen || link > peak)
 		{
 			/* Then set this as the new peak. */
 			peak = link;
