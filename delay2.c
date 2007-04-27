@@ -70,6 +70,9 @@ static void delay(float len, float feedback, float wetout,
 	lfoamp /= 100.0f; /* convert percentage to ratio */
 	lfoamp = CLAMP(0.0f, lfoamp, 1.0f);
 
+	wetout /= 100.0f; /* convert percentage to ratio */
+	wetout = CLAMP(0.0f, wetout, 1.0f);
+
 	len = CLAMP(0.0f, len, 30000000.0f);
 	len *= RATE / 1000.0f; /* convert ms to samples */
 
