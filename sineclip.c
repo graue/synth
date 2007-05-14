@@ -41,11 +41,11 @@ static void sineclip(float amp, float freq, float dc)
 	float f[2]; /* 2 samples at once, left/right */
 	float sinelimit;
 	float phase = 0.0f;
-	const float phase_inc = RATE / (2*M_PI*freq);
+	const float phase_inc = 2*M_PI*freq / RATE;
 
 	while (fread(f, sizeof f, 1, stdin) == 1)
 	{
-		sinelimit = sin(phase)*amp + dc;
+		sinelimit = fabs(sin(phase))*amp + dc;
 		f[0] = CLAMP(-sinelimit, f[0], sinelimit);
 		f[1] = CLAMP(-sinelimit, f[1], sinelimit);
 
