@@ -2,10 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "synth.h"
+#define MT_IMPLEMENT
+#include "mt.h"
 
 /* fmt: convert floats on stdin to their final format */
 
 static int monodst = 0;
+static int dodither = 0;
 static void conv_u8(void);
 static void conv_s8(void);
 static void conv_16(void);
@@ -26,10 +29,11 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "-24")) fmt = 3; /* 24-bit signed */
 		else if (!strcmp(argv[i], "-32")) fmt = 4; /* 32-bit signed */
 		else if (!strcmp(argv[i], "-mono")) monodst = 1;
+		else if (!strcmp(argv[i], "-dither")) dodither = 1;
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -u8, -s8, -16, -24, -32, "
-				"-mono\n");
+				"-mono, -dither\n");
 			exit(0);
 		}
 	}
@@ -50,37 +54,54 @@ int main(int argc, char *argv[])
 }
 
 /* returns 1 on success */
-static int nextsample(float *dst)
+static int nextsample(double *dst)
 {
+	float f[2];
+
 	if (monodst)
 	{
-		float f[2];
 		if (fread(f, sizeof f[0], 2, stdin) < 2)
 			return 0;
-		*dst = (f[0] + f[1]) / 2.0f;
-		return 1;
+		*dst = (f[0] + f[1]) / 2.0;
 	}
-	return fread(dst, sizeof *dst, 1, stdin) == 1;
+	else
+	{
+		if (fread(&f[0], sizeof f[0], 1, stdin) < 1)
+			return 0;
+		*dst = f[0];
+	}
+
+	return 1;
+}
+
+/* returns random value in [-1, 1) */
+double dithernoise(void)
+{
+	return mt_frand() * 2.0 - 1.0;
 }
 
 static void conv_u8(void)
 {
-	float f;
+	double f;
 	unsigned char s;
 
 	while (nextsample(&f))
 	{
 		/* Expand range from [-1, 1] to about [-128, 127]. */
-		f *= 128.0f;
+		f *= 128.0;
 
 		/* Move range from -128 .. 127 to 0 .. 255. */
-		f += 128.0f;
+		f += 128.0;
+
+		/* Dither. */
+		if (dodither)
+			f += dithernoise();
 
 		/* Clip. */
-		if (f < 0.0f)
-			f = 0.0f;
-		else if (f > 255.0f)
-			f = 255.0f;
+		if (f < 0.0)
+			f = 0.0;
+		else if (f > 255.0)
+			f = 255.0;
 
 		s = (unsigned char)f;
 		putchar((char)s);
@@ -89,19 +110,23 @@ static void conv_u8(void)
 
 static void conv_s8(void)
 {
-	float f;
+	double f;
 	signed char s;
 
 	while (nextsample(&f))
 	{
 		/* Expand range from [-1, 1] to about [-128, 127]. */
-		f *= 128.0f;
+		f *= 128.0;
+
+		/* Dither. */
+		if (dodither)
+			f += dithernoise();
 
 		/* Clip. */
-		if (f < -128.0f)
-			f = -128.0f;
-		else if (f > 127.0f)
-			f = 127.0f;
+		if (f < -128.0)
+			f = -128.0;
+		else if (f > 127.0)
+			f = 127.0;
 
 		s = (signed char)f;
 		putchar((char)s);
@@ -110,19 +135,23 @@ static void conv_s8(void)
 
 static void conv_16(void)
 {
-	float f;
+	double f;
 	short s;
 
 	while (nextsample(&f))
 	{
 		/* Expand range from [-1, 1] to about [-32768, 32767]. */
-		f *= 32768.0f;
+		f *= 32768.0;
+
+		/* Dither. */
+		if (dodither)
+			f += dithernoise();
 
 		/* Clip. */
-		if (f < -32768.0f)
-			f = -32768.0f;
-		else if (f > 32767.0f)
-			f = 32767.0f;
+		if (f < -32768.0)
+			f = -32768.0;
+		else if (f > 32767.0)
+			f = 32767.0;
 
 		s = (short)f;
 		fwrite(&s, sizeof s, 1, stdout);
@@ -131,8 +160,7 @@ static void conv_16(void)
 
 static void conv_24(void)
 {
-	float f;
-	double d;
+	double f;
 	int s;
 	unsigned char *sw;
 
@@ -140,16 +168,18 @@ static void conv_24(void)
 
 	while (nextsample(&f))
 	{
-		d = f;
-
 		/* Expand from [-1, 1] to about [-8388608, 8388607]. */
-		d *= 8388608.0f;
+		f *= 8388608.0;
+
+		/* Dither. */
+		if (dodither)
+			f += dithernoise();
 
 		/* Clip. */
-		if (d > 8388607.0f) d = 8388607.0f;
-		else if (d < -8388608.0f) d = -8388608.f;
+		if (f > 8388607.0) f = 8388607.0;
+		else if (f < -8388608.0) f = -8388608.f;
 
-		s = (int)d;
+		s = (int)f;
 #if WORDS_BIGENDIAN
 		if (sw[0] == 0xff) putc(sw[1] | 0x80, stdout);
 		else putc(sw[1], stdout);
@@ -166,22 +196,23 @@ static void conv_24(void)
 
 static void conv_32(void)
 {
-	float f;
-	double d;
+	double f;
 	int s;
 
 	while (nextsample(&f))
 	{
-		d = f;
-
 		/* Expand from [-1, 1] to about [-2147483648, 2147483647]. */
-		d *= 2147483648.0f;
+		f *= 2147483648.0;
+
+		/* Dither. */
+		if (dodither)
+			f += dithernoise();
 
 		/* Clip. */
-		if (d > 2147483647.0f) d = 2147483647.0f;
-		else if (d < -2147483648.0f) d = -2147483648.f;
+		if (f > 2147483647.0) f = 2147483647.0;
+		else if (f < -2147483648.0) f = -2147483648.f;
 
-		s = (int)d;
+		s = (int)f;
 		fwrite(&s, sizeof s, 1, stdout);
 	}
 }
