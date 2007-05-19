@@ -9,7 +9,7 @@ int32_t mt_rand(void);
 double mt_frand(void);
 
 #ifdef MT_IMPLEMENT
-#include "mt.c"
+#include "mt.inc"
 #endif
 
 #endif
