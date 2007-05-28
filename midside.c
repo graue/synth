@@ -5,7 +5,10 @@
 
 /* midside.c: convert left/right to mid/side */
 
-/* TODO: make into a stereo program that also does MS->LR and LR->RL */
+/*
+ * Note: This program also undoes itself, but it has a side effect of
+ * ~6 dB gain in the process (2x amplitude).
+ */
 
 static void midside(void);
 
