@@ -3,6 +3,8 @@
 #include <string.h>
 #include <time.h>
 #include "synth.h"
+#define MT_IMPLEMENT
+#include "mt.h"
 
 /* white: generate white noise */
 
@@ -33,13 +35,13 @@ int main(int argc, char *argv[])
 	/* convert options */
 	range = amp * 2;
 
-	srand((unsigned int)time(NULL));
+	mt_init((unsigned int)time(NULL));
 	SET_BINARY_MODE
 	for (n = 0; n < len*2; n++)
 	{
 		float f;
 
-		f = ((float)rand()) / RAND_MAX * range - amp;
+		f = mt_frand() * range - amp;
 		if (fwrite(&f, sizeof f, 1, stdout) < 1)
 			break;
 	}
