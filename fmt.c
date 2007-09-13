@@ -10,6 +10,8 @@
 /* types of dither: none, rectangular, triangular */
 enum { DI_NONE, DI_RECT, DI_TRI };
 
+static int truncbits = 0;
+static unsigned int truncmask = 0xffffffff;
 static int monodst = 0;
 static int dithertype = DI_NONE;
 static void conv_u8(void);
@@ -34,12 +36,27 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "-mono")) monodst = 1;
 		else if (!strcmp(argv[i], "-dither")) dithertype = DI_RECT;
 		else if (!strcmp(argv[i], "-tridither")) dithertype = DI_TRI;
+		else if (!strcmp(argv[i], "-truncate") && i+1 < argc)
+			truncbits = atoi(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -u8, -s8, -16, -24, -32, "
-				"-mono, -dither, -tridither\n");
+				"-mono, -dither, -tridither, "
+				"-truncate numbits\n");
 			exit(0);
 		}
+	}
+
+	/*
+	 * The -truncate N option sets the lowest N samples to 0, so
+	 * for example 'fmt -24 -truncate 4' outputs a signal with 20
+	 * significant bits.
+	 */
+	if (truncbits > 0)
+	{
+		truncmask >>= truncbits;
+		truncmask <<= truncbits;
+		dithertype = DI_NONE; /* XXX don't dither with -truncate */
 	}
 
 	SET_BINARY_MODE
@@ -115,6 +132,7 @@ static void conv_u8(void)
 			f = 255.0;
 
 		s = (unsigned char)f;
+		s &= truncmask;
 		putchar((char)s);
 	}
 }
@@ -140,6 +158,7 @@ static void conv_s8(void)
 			f = 127.0;
 
 		s = (signed char)f;
+		s &= truncmask;
 		putchar((char)s);
 	}
 }
@@ -165,6 +184,7 @@ static void conv_16(void)
 			f = 32767.0;
 
 		s = (short)f;
+		s &= truncmask;
 		fwrite(&s, sizeof s, 1, stdout);
 	}
 }
@@ -191,6 +211,7 @@ static void conv_24(void)
 		else if (f < -8388608.0) f = -8388608.f;
 
 		s = (int)f;
+		s &= truncmask;
 #if WORDS_BIGENDIAN
 		if (sw[0] == 0xff) putc(sw[1] | 0x80, stdout);
 		else putc(sw[1], stdout);
@@ -224,6 +245,7 @@ static void conv_32(void)
 		else if (f < -2147483648.0) f = -2147483648.f;
 
 		s = (int)f;
+		s &= truncmask;
 		fwrite(&s, sizeof s, 1, stdout);
 	}
 }
