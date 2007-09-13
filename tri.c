@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* tri: generate a triangle wave */
 
@@ -22,9 +23,12 @@ int main(int argc, char *argv[])
 {
 	float freq = 1000, amp = 0.5f, phase = 0.0f;
 	float period;
-	long len = RATE;
+	long len;
 	long n;
 	int i;
+
+	get_rate();
+	len = RATE;
 
 	/* read options */
 	for (i = 1; i < argc; i++)

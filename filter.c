@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* filter.c: highpass, lowpass, or other IIR filter */
 
@@ -34,7 +35,7 @@ static void filter(const biquadcoeffs_t *coeffs);
 
 int main(int argc, char *argv[])
 {
-	float f0 = RATE / 4.0f;
+	float f0; /* set below */
 	float q = 1.0f;
 	float bw = 1.0f;
 	float slope = 1.0f;
@@ -43,6 +44,9 @@ int main(int argc, char *argv[])
 	int usewhich = USE_Q;
 	int i;
 	biquadcoeffs_t co;
+
+	get_rate();
+	f0 = RATE / 4.0f;
 
 	for (i = 1; i < argc; i++)
 	{

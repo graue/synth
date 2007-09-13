@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* limit.c: limit a waveform's dynamic range, roughly */
 
@@ -17,6 +18,8 @@ int main(int argc, char *argv[])
 {
 	float max = 1.0f;
 	int i;
+
+	get_rate();
 
 	for (i = 1; i < argc; i++)
 	{

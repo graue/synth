@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* xdelay.c: cross-delay */
 
@@ -14,6 +15,8 @@ int main(int argc, char *argv[])
 	float wetout = 100.0f;
 	int leftlen_smp, rightlen_smp;
 	int i;
+
+	get_rate();
 
 	for (i = 1; i < argc; i++)
 	{

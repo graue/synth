@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* comp.c: compressor */
 
@@ -17,6 +18,8 @@ int main(int argc, char *argv[])
 	float release = 100.0f;
 	int rms = 0;
 	int i;
+
+	get_rate();
 
 	for (i = 1; i < argc; i++)
 	{

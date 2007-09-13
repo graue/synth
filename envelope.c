@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* env.c: apply or generate an envelope */
 
@@ -23,6 +24,8 @@ int main(int argc, char *argv[])
 	int numenvs = 0;
 	int i;
 	int startset = 0;
+
+	get_rate();
 
 	/* by default apply env if stdin is not tty */
 	apply = !isatty(STDIN_FILENO);

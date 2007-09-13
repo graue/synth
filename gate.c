@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* gate.c: poor man's gate */
 
@@ -21,6 +22,8 @@ int main(int argc, char *argv[])
 	float len = 50.0f;
 	float mag = 0.00000001f;
 	int i;
+
+	get_rate();
 
 	for (i = 1; i < argc; i++)
 	{

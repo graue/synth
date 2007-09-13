@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* delay2.c: an overcomplicated delay effect */
 
@@ -19,6 +20,8 @@ int main(int argc, char *argv[])
 	float lfoinitphase = 0.0f; /* 0.0 out of 1.0 */
 	int lfomod = 0; /* not modulated */
 	int i;
+
+	get_rate();
 
 	for (i = 1; i < argc; i++)
 	{

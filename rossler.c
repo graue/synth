@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* rossler: a rossler oscillator */
 
@@ -15,6 +16,8 @@ int main(int argc, char *argv[])
 	float len_ms = 1000.0f;
 	int mono = 0;
 	int i;
+
+	get_rate();
 
 	/* read options */
 	for (i = 1; i < argc; i++)

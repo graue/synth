@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* sineclip.c: sine-limit a waveform; a weird noise effect */
 
@@ -14,6 +15,8 @@ int main(int argc, char *argv[])
 	float freq = 0.2f;
 	float dc = 0.75f;
 	int i;
+
+	get_rate();
 
 	for (i = 1; i < argc; i++)
 	{

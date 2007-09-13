@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* limit2.c: limiter */
 
@@ -14,6 +15,8 @@ int main(int argc, char *argv[])
 	float attack = 10.0f;
 	float release = 100.0f;
 	int i;
+
+	get_rate();
 
 	for (i = 1; i < argc; i++)
 	{

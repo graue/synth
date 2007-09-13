@@ -5,15 +5,19 @@
 #include "synth.h"
 #define MT_IMPLEMENT
 #include "mt.h"
+#include "rate.inc"
 
 /* white: generate white noise */
 
 int main(int argc, char *argv[])
 {
 	float amp = 0.5f, range;
-	long len = RATE;
+	long len;
 	long n;
 	int i;
+
+	get_rate();
+	len = RATE;
 
 	/* read options */
 	for (i = 1; i < argc; i++)

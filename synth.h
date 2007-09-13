@@ -1,7 +1,7 @@
 /* Definitions for the audio used: */
 
-#ifndef RATE
-#define RATE 44100
+#ifndef DEFAULT_RATE
+#define DEFAULT_RATE 44100
 #endif
 
 #ifndef LACK_UNISTD_H

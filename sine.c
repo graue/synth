@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* sine: generate a sine wave */
 
@@ -10,10 +11,13 @@ int main(int argc, char *argv[])
 {
 	float freq = 1000.0f, amp = 0.5f, startphase = 0.0f;
 	double phase, inc;
-	long len = RATE;
+	long len;
 	long n;
 	int i;
 	int modfreq = 0; /* use input to modulate frequency */
+
+	get_rate();
+	len = RATE;
 
 	/* read options */
 	for (i = 1; i < argc; i++)
