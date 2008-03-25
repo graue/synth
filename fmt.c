@@ -14,6 +14,7 @@ static int truncbits = 0;
 static unsigned int truncmask = 0xffffffff;
 static int monodst = 0;
 static int dithertype = DI_NONE;
+static int clipwarn = 0;
 static void conv_u8(void);
 static void conv_s8(void);
 static void conv_16(void);
@@ -38,11 +39,13 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "-tridither")) dithertype = DI_TRI;
 		else if (!strcmp(argv[i], "-truncate") && i+1 < argc)
 			truncbits = atoi(argv[++i]);
+		else if (!strcmp(argv[i], "-clipwarn")) clipwarn = 1;
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -u8, -s8, -16, -24, -32, "
 				"-mono, -dither, -tridither, "
-				"-truncate numbits\n");
+				"-truncate numbits,\n"
+				"-clipwarn\n");
 			exit(0);
 		}
 	}
@@ -108,6 +111,12 @@ double dithernoise(void)
 	}
 }
 
+static void clip_warning(void)
+{
+	fprintf(stderr, "fmt: clipping occurred\n");
+	clipwarn = 0; /* don't warn again */
+}
+
 static void conv_u8(void)
 {
 	double f;
@@ -115,6 +124,8 @@ static void conv_u8(void)
 
 	while (nextsample(&f))
 	{
+		int clipped = 1;
+
 		/* Expand range from [-1, 1] to about [-128, 127]. */
 		f *= 128.0;
 
@@ -130,10 +141,14 @@ static void conv_u8(void)
 			f = 0.0;
 		else if (f > 255.0)
 			f = 255.0;
+		else clipped = 0;
 
 		s = (unsigned char)f;
 		s &= truncmask;
 		putchar((char)s);
+
+		if (clipped && clipwarn)
+			clip_warning();
 	}
 }
 
@@ -144,6 +159,8 @@ static void conv_s8(void)
 
 	while (nextsample(&f))
 	{
+		int clipped = 1;
+
 		/* Expand range from [-1, 1] to about [-128, 127]. */
 		f *= 128.0;
 
@@ -156,10 +173,14 @@ static void conv_s8(void)
 			f = -128.0;
 		else if (f > 127.0)
 			f = 127.0;
+		else clipped = 0;
 
 		s = (signed char)f;
 		s &= truncmask;
 		putchar((char)s);
+
+		if (clipped && clipwarn)
+			clip_warning();
 	}
 }
 
@@ -170,6 +191,8 @@ static void conv_16(void)
 
 	while (nextsample(&f))
 	{
+		int clipped = 1;
+
 		/* Expand range from [-1, 1] to about [-32768, 32767]. */
 		f *= 32768.0;
 
@@ -182,10 +205,14 @@ static void conv_16(void)
 			f = -32768.0;
 		else if (f > 32767.0)
 			f = 32767.0;
+		else clipped = 0;
 
 		s = (short)f;
 		s &= truncmask;
 		fwrite(&s, sizeof s, 1, stdout);
+
+		if (clipped && clipwarn)
+			clip_warning();
 	}
 }
 
@@ -199,6 +226,8 @@ static void conv_24(void)
 
 	while (nextsample(&f))
 	{
+		int clipped = 1;
+
 		/* Expand from [-1, 1] to about [-8388608, 8388607]. */
 		f *= 8388608.0;
 
@@ -209,6 +238,7 @@ static void conv_24(void)
 		/* Clip. */
 		if (f > 8388607.0) f = 8388607.0;
 		else if (f < -8388608.0) f = -8388608.f;
+		else clipped = 0;
 
 		s = (int)f;
 		s &= truncmask;
@@ -223,6 +253,9 @@ static void conv_24(void)
 		if (sw[3] == 0xff) putc(sw[2] | 0x80, stdout);
 		else putc(sw[2], stdout);
 #endif
+
+		if (clipped && clipwarn)
+			clip_warning();
 	}
 }
 
@@ -233,6 +266,8 @@ static void conv_32(void)
 
 	while (nextsample(&f))
 	{
+		int clipped = 1;
+
 		/* Expand from [-1, 1] to about [-2147483648, 2147483647]. */
 		f *= 2147483648.0;
 
@@ -243,9 +278,13 @@ static void conv_32(void)
 		/* Clip. */
 		if (f > 2147483647.0) f = 2147483647.0;
 		else if (f < -2147483648.0) f = -2147483648.f;
+		else clipped = 0;
 
 		s = (int)f;
 		s &= truncmask;
 		fwrite(&s, sizeof s, 1, stdout);
+
+		if (clipped && clipwarn)
+			clip_warning();
 	}
 }
