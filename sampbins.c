@@ -60,20 +60,25 @@ static void nomem(void)
 
 #define FADESAMPS 50
 
-#define M_LN10_OVER_20 0.115129254649702284200899573
-#define DBTORAT(x) exp((x) * M_LN10_OVER_20)
-
 static void sampbins(int numbins, int grainsamps)
 {
 	float **bins;
 	int *virgin; /* boolean: this bin written to? */
-	float in[2];
-	float fadeamp;
+	float in[2], out[2];
 	float fademul;
 	int ix;
 	int cur = 0; /* current bin (playback) */
+	int curtail = 0; /* current bin (playing/fading tail end) */
 	int rec = 0; /* current bin (recording) */
+	int rectail = 0; /* previous bin (recording tail end) */
 	int pos = 0; /* bin pos, in stereo samples */
+	const int totalsamps = grainsamps + FADESAMPS;
+
+	if (grainsamps <= FADESAMPS*2)
+	{
+		fprintf(stderr, "sampbins: grains too short\n");
+		exit(EXIT_FAILURE);
+	}
 
 	bins = malloc(sizeof *bins * numbins);
 	if (bins == NULL) nomem();
@@ -82,9 +87,9 @@ static void sampbins(int numbins, int grainsamps)
 
 	for (ix = 0; ix < numbins; ix++)
 	{
-		bins[ix] = malloc(sizeof **bins * grainsamps * 2);
+		bins[ix] = malloc(sizeof **bins * totalsamps * 2);
 		if (bins[ix] == NULL) nomem();
-		memset(bins[ix], 0, sizeof **bins * grainsamps * 2);
+		memset(bins[ix], 0, sizeof **bins * totalsamps * 2);
 		virgin[ix] = 1;
 	}
 
@@ -98,39 +103,52 @@ static void sampbins(int numbins, int grainsamps)
 		 * playing from/recording to the same bin,
 		 * it works.
 		 */
-		if (fwrite(&bins[cur][pos*2], sizeof **bins, 2, stdout) < 2)
+		out[0] = bins[cur][pos*2];
+		out[1] = bins[cur][pos*2+1];
+		if (pos < FADESAMPS)
+		{
+			out[0] += bins[curtail][(grainsamps+pos)*2];
+			out[1] += bins[curtail][(grainsamps+pos)*2+1];
+		}
+		if (fwrite(out, sizeof *out, 2, stdout) < 2)
 			return;
 
 		/* record input sample. */
 		bins[rec][pos*2] = in[0];
 		bins[rec][pos*2+1] = in[1];
 
+		/* record to tail end of previous bin, for fading. */
+		if (pos < FADESAMPS)
+		{
+			bins[rectail][(grainsamps+pos)*2] = in[0];
+			bins[rectail][(grainsamps+pos)*2+1] = in[1];
+		}
+
 		/*
-		 * advance position, going to new bins if
+		 * advance position, fading/going to new bins if
 		 * necessary.
 		 */
 		pos++;
-		if (pos == grainsamps)
+		if (pos == FADESAMPS)
 		{
 			/*
-			 * if grains are long enough, fade
-			 * the newly recorded one to avoid
-			 * clicking.
+			 * fade the beginning of this grain
+			 * and the end of the previous one
+			 * to avoid clicking.
 			 */
-			if (grainsamps > FADESAMPS*2)
+			for (ix = 0; ix < FADESAMPS; ix++)
 			{
-				for (ix = 0; ix < FADESAMPS; ix++)
-				{
-					fadeamp = 96 * (ix / (float)FADESAMPS)
-						- 96;
-					fademul = DBTORAT(fadeamp);
-					bins[rec][ix*2] *= fademul;
-					bins[rec][ix*2+1] *= fademul;
-					bins[rec][grainsamps-ix*2-2] *= fademul;
-					bins[rec][grainsamps-ix*2-1] *= fademul;
-				}
+				fademul = ix / (float)FADESAMPS;
+				bins[rec][ix*2] *= fademul;
+				bins[rec][ix*2+1] *= fademul;
+				bins[rectail][(totalsamps-ix)*2-2] *= fademul;
+				bins[rectail][(totalsamps-ix)*2-1] *= fademul;
 			}
-
+			rectail = rec;
+			curtail = cur;
+		}
+		if (pos == grainsamps)
+		{
 			virgin[rec] = 0;
 			rec = mt_urand() % numbins;
 
