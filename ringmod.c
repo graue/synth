@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
 	FILE *inputs[MAXINPUTS];
 	int numfiles = 0;
 
-	SET_BINARY_MODE
 	for (i = 1; i < argc; i++)
 	{
 		if (!strcmp(argv[i], "-amp"))
@@ -50,6 +49,7 @@ int main(int argc, char *argv[])
 				numfiles++;
 		}
 	}
+	SET_BINARY_MODE
 
 	if (numfiles == 0)
 	{
