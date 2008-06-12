@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "synth.h"
 
 /* clip.c: clip a waveform */
@@ -16,9 +17,11 @@ int main(int argc, char *argv[])
 	{
 		if (!strcmp(argv[i], "-amp") && i+1 < argc)
 			max = atof(argv[++i]);
+		else if (!strcmp(argv[i], "-dB") && i+1 < argc)
+			max = pow(10.0, atof(argv[++i]) / 20.0);
 		else if (!strcmp(argv[i], "-help"))
 		{
-			fprintf(stderr, "options: -amp amplitude\n");
+			fprintf(stderr, "options: -amp amplitude, -dB dB\n");
 			exit(0);
 		}
 	}
