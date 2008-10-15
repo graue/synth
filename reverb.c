@@ -227,7 +227,7 @@ static revstate_t *do_reverb(revstate_t *rev, float *samps, int nsamps)
 		else
 			init_revstate(rev);
 	}
-	else run_reverb(rev, samps, nsamps);
+	run_reverb(rev, samps, nsamps, skip);
 
 	return rev;
 }
