@@ -1,32 +1,73 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "synth.h"
+#include "rate.inc"
 
 /* reverb.c: cyan's psg reverb */
 
-static void reverb(float volume);
+/* default values are meant to reflect those from the old optionless reverb */
+
+static void reverb(float wetoutdB, float decayamt, float damping,
+	float predelayms, float roomsizems, float density);
 
 int main(int argc, char *argv[])
 {
-	float vol = 1.0f;
+	float wetoutdB = 0.0;
+	float decayamt = 0.8;
+	float damping = 0.9;
+	float roomsizems = 226.75736961451;
+	float predelayms = roomsizems / 10;
+	float density = 0.8;
 	int i;
+
+	get_rate();
 
 	for (i = 1; i < argc; i++)
 	{
-		if (!strcmp(argv[i], "-vol") && i+1 < argc)
-			vol = atof(argv[++i]);
+		if (!strcmp(argv[i], "-wetoutdB") && i+1 < argc)
+			wetoutdB = atof(argv[++i]);
+		else if (!strcmp(argv[i], "-decay") && i+1 < argc)
+			decayamt = atof(argv[++i]);
+		else if (!strcmp(argv[i], "-damping") && i+1 < argc)
+			damping = atof(argv[++i]);
+		else if (!strcmp(argv[i], "-roomsize") && i+1 < argc)
+			roomsizems = atof(argv[++i]);
+		else if (!strcmp(argv[i], "-predelay") && i+1 < argc)
+			predelayms = atof(argv[++i]);
+		else if (!strcmp(argv[i], "-density") && i+1 < argc)
+			density = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
-			fprintf(stderr, "options: -vol multiplicand\n");
+			fprintf(stderr,
+				"options (useful range) [default]:\n"
+				" -wetoutdB [0.0 dB]\n"
+				" -decay (0.0 - 1.0) [0.8]\n"
+				" -damping (0.0 - 0.95) [0.9]\n"
+				" -roomsize [226.76 ms]\n"
+				" -predelay [22.676 ms]\n"
+				" -density (0.0 - 1.0) [0.8]\n"
+				);
 			exit(0);
+		}
+		else
+		{
+			fprintf(stderr,
+				"reverb: disregarding unknown option %s\n",
+				argv[i]);
 		}
 	}
 
 	SET_BINARY_MODE
-	reverb(vol);
+	reverb(wetoutdB, decayamt, damping, predelayms, roomsizems, density);
 	return 0;
 }
+
+#define M_20_OVER_LN10 8.68588963806503655302257838
+#define M_LN10_OVER_20 0.115129254649702284200899573
+#define RATTODB(x) (log(x) * M_20_OVER_LN10)
+#define DBTORAT(x) exp((x) * M_LN10_OVER_20)
 
 /*
  * The most reverb stages that will be used. The actual number of
@@ -82,12 +123,29 @@ typedef struct revstate {
 
 static revstate_t *do_reverb(revstate_t *rev, float *samps, int nsamps);
 
-static void reverb(float volume)
+static void reverb(float wetoutdB, float decayamt, float damping,
+	float predelayms, float roomsizems, float density)
 {
 	float f[2];
 	revstate_t *rev[2] = {NULL, NULL};
 
-	(void)volume; /* XXX unused */
+	rv_return *= DBTORAT(wetoutdB);
+	rv_decay = decayamt;
+
+	/*
+	 * In lieu of a way to link it to any measurement that really makes
+	 * sense, make the damping value relative to 44.1 KHz since that is
+	 * what the effect originally worked at.
+	 *
+	 * XXX: I don't really know for sure what I'm doing here.
+	 */
+	rv_damp = CLAMP(0.0, damping * 44100 / RATE, 0.95);
+
+	rv_predelay = (int)(predelayms / 1000.0 * RATE);
+	rv_roomsize = (int)(roomsizems / 1000.0 * RATE);
+
+	density = CLAMP(0.0, density, 1.0);
+	rv_mem = (int)pow(2, 7 + 5*density);
 
 	while (fread(f, sizeof f[0], 2, stdin) == 2)
 	{
