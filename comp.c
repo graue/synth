@@ -8,7 +8,7 @@
 /* comp.c: compressor */
 
 static void compress(float threshdB, float ratio, float attack, float release,
-	int rms);
+	int rms, float rmswindow);
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 	float ratio = 1.0f;
 	float attack = 10.0f;
 	float release = 100.0f;
+	float rmswindow = 5.0f; /* in milliseconds */
 	int rms = 0;
 	int i;
 
@@ -33,17 +34,19 @@ int main(int argc, char *argv[])
 			release = atof(argv[++i]);
 		else if (strcmp(argv[i], "-rms") == 0)
 			rms = 1;
+		else if (strcmp(argv[i], "-rmswindow") == 0 && i+1 < argc)
+			rmswindow = atof(argv[++i]);
 		else if (strcmp(argv[i], "-help") == 0)
 		{
 			fprintf(stderr, "options: -threshdB dB, "
 				"-ratio ratio, -attack ms, -release ms, "
-				"-rms\n");
+				"-rms, -rmswindow ms\n");
 			exit(0);
 		}
 	}
 
 	SET_BINARY_MODE
-	compress(threshdB, ratio, attack, release, rms);
+	compress(threshdB, ratio, attack, release, rms, rmswindow);
 	return 0;
 }
 
@@ -67,17 +70,15 @@ static float attrelenv_run(float attcoef, float relcoef, float in, float state)
 #define RATTODB(x) (log(x) * M_20_OVER_LN10)
 #define DBTORAT(x) exp((x) * M_LN10_OVER_20)
 
-#define RMS_WINDOW 5.0f /* RMS averaging time in milliseconds */
-
 static void compress(float threshdB, float ratio, float attack, float release,
-	int rms)
+	int rms, float rmswindow)
 {
 	float f[2];
 	float envdB = DC_OFFSET;
 	float rmsstate = DC_OFFSET;
 	const float attcoef = ENV_COEF(attack);
 	const float relcoef = ENV_COEF(release);
-	const float rmscoef = ENV_COEF(RMS_WINDOW);
+	const float rmscoef = ENV_COEF(rmswindow);
 
 	while (fread(f, sizeof f[0], 2, stdin) == 2)
 	{
