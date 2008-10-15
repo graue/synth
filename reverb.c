@@ -121,13 +121,18 @@ typedef struct revstate {
 	float flt[RV_MAX_STAGES]; /* Filtering state of each stage. */
 } revstate_t;
 
-static revstate_t *do_reverb(revstate_t *rev, float *samps, int nsamps);
+static revstate_t *do_reverb(revstate_t *rev, float *samps, int nsamps,
+	int skip);
+
+/* Number of samples to process at one time. */
+#define CHUNKSIZE 10000
 
 static void reverb(float wetoutdB, float decayamt, float damping,
 	float predelayms, float roomsizems, float density)
 {
-	float f[2];
+	float f[2*CHUNKSIZE];
 	revstate_t *rev[2] = {NULL, NULL};
+	size_t cnt;
 
 	rv_return *= DBTORAT(wetoutdB);
 	rv_decay = decayamt;
@@ -147,12 +152,12 @@ static void reverb(float wetoutdB, float decayamt, float damping,
 	density = CLAMP(0.0, density, 1.0);
 	rv_mem = (int)pow(2, 7 + 5*density);
 
-	while (fread(f, sizeof f[0], 2, stdin) == 2)
+	while ((cnt = fread(f, sizeof f[0]*2, CHUNKSIZE, stdin)) >= 1)
 	{
-		rev[0] = do_reverb(rev[0], f, 1);
-		rev[1] = do_reverb(rev[1], f+1, 1);
+		rev[0] = do_reverb(rev[0], f, cnt, 2);
+		rev[1] = do_reverb(rev[1], f+1, cnt, 2);
 
-		if (fwrite(f, sizeof f[0], 2, stdout) < 2)
+		if (fwrite(f, sizeof f[0]*2, cnt, stdout) < cnt)
 			return;
 	}
 }
@@ -183,13 +188,19 @@ static void init_revstate(revstate_t *rev)
 	}
 }
 
-void run_reverb(revstate_t *rev, float *samps, int nsamps)
+/*
+ * "skip" parameter is how many array indices to skip when
+ * moving to the next sample. For example, this can be given
+ * as 2 to use only the first channel of stereo audio.
+ */
+
+void run_reverb(revstate_t *rev, float *samps, int nsamps, const int skip)
 {
 	int ix;
 	int stage;
 	float sum;
 
-	for (ix = 0; ix < nsamps; ix++)
+	for (ix = 0; ix < skip*nsamps; ix += skip)
 	{
 		sum = 0.0f; /* to hold the sum of all stages */
 		for (stage = 0; stage < RV_MAX_STAGES; stage++)
@@ -217,7 +228,8 @@ void run_reverb(revstate_t *rev, float *samps, int nsamps)
 	}
 }
 
-static revstate_t *do_reverb(revstate_t *rev, float *samps, int nsamps)
+static revstate_t *do_reverb(revstate_t *rev, float *samps, int nsamps,
+	int skip)
 {
 	if (rev == NULL)
 	{
