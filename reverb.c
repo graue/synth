@@ -235,7 +235,10 @@ static revstate_t *do_reverb(revstate_t *rev, float *samps, int nsamps,
 	{
 		rev = malloc(sizeof *rev + RV_MAX_STAGES*rv_mem);
 		if (rev == NULL)
+		{
 			fprintf(stderr, "Out of memory, disabling reverb\n");
+			return rev;
+		}
 		else
 			init_revstate(rev);
 	}
