@@ -9,6 +9,7 @@
 
 static void compress(float threshdB, float ratio, float attack, float release,
 	int rms, float rmswindow);
+static float str_to_ratio(const char *s);
 
 int main(int argc, char *argv[])
 {
@@ -27,7 +28,7 @@ int main(int argc, char *argv[])
 		if (strcmp(argv[i], "-threshdB") == 0 && i+1 < argc)
 			threshdB = atof(argv[++i]);
 		else if (strcmp(argv[i], "-ratio") == 0 && i+1 < argc)
-			ratio = atof(argv[++i]);
+			ratio = str_to_ratio(argv[++i]);
 		else if (strcmp(argv[i], "-attack") == 0 && i+1 < argc)
 			attack = atof(argv[++i]);
 		else if (strcmp(argv[i], "-release") == 0 && i+1 < argc)
@@ -43,6 +44,12 @@ int main(int argc, char *argv[])
 				"-rms, -rmswindow ms\n");
 			exit(0);
 		}
+	}
+
+	if (isinff(ratio) || isnanf(ratio) || ratio <= 0.0f)
+	{
+		fprintf(stderr, "comp: ratio must be positive\n");
+		exit(EXIT_FAILURE);
 	}
 
 	SET_BINARY_MODE
@@ -127,4 +134,25 @@ static void compress(float threshdB, float ratio, float attack, float release,
 		if (fwrite(f, sizeof f[0], 2, stdout) < 2)
 			return;
 	}
+}
+
+/*
+
+process a string like x:y, where x and y are decimal numbers,
+   returning the float y/x
+alternatively if the string has no :, just use atof
+
+*/
+static float str_to_ratio(const char *s)
+{
+	const char *colon;
+	float f1, f2;
+
+	colon = strchr(s, ':');
+	if (colon == NULL)
+		return atof(s);
+
+	f1 = atof(s);
+	f2 = atof(colon+1);
+	return f2/f1;
 }
