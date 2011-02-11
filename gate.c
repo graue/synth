@@ -54,32 +54,34 @@ int main(int argc, char *argv[])
 
 static void gate(float len, float threshdB, int drop)
 {
-	float f;
+	float f[2], avg;
 	int smplen = (int)(RATE * len / 1000.0f);
 	int numlow = 0;
 	int closed = 0;
 	float mag = DBTORAT(threshdB);
 
-	while (fread(&f, sizeof f, 1, stdin) == 1)
+	while (fread(f, sizeof f[0], 2, stdin) == 2)
 	{
+		avg = (f[0]+f[1]) / 2;
+
 		if (closed)
 		{
-			if (fabs(f) > mag)
+			if (fabs(avg) > mag)
 				closed = 0;
 			else
 			{
-				f = 0.0;
+				avg = f[0] = f[1] = 0.0;
 				if (drop)
 					continue;
 			}
 		}
-		else if (fabs(f) < mag && ++numlow == smplen)
+		else if (fabs(avg) < mag && ++numlow == smplen)
 		{
 			numlow = 0;
 			closed = 1;
 		}
 
-		if (fwrite(&f, sizeof f, 1, stdout) < 1)
+		if (fwrite(f, sizeof f[0], 2, stdout) < 2)
 			return;
 	}
 }
