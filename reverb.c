@@ -207,16 +207,24 @@ void run_reverb(revstate_t *rev, float *samps, int nsamps, const int skip)
 		{
 			const int offset =
 				rev->dlstart[stage] + rev->dlpos[stage];
+			float revdloffset;
 
 			if (rev->dllen[stage] == 0) /* no more stages */
 				break;
 
-			sum += rev->dlamp[stage] * rev->dl[offset];
+			/* Get delay line sample and fix if denormal. */
+			revdloffset = rev->dl[offset];
+			revdloffset += 1e-18;
+			revdloffset -= 1e-18;
 
-			/* Update filter state. */
+			sum += rev->dlamp[stage] * revdloffset;
+
+			/* Update filter state, fixing denormals. */
 			rev->flt[stage] =
 				rev->flt[stage]*rv_damp
-					+ (rev->dl[offset]*(1-rv_damp));
+					+ (revdloffset*(1-rv_damp));
+			rev->flt[stage] += 1e-18;
+			rev->flt[stage] -= 1e-18;
 
 			rev->dl[offset] = samps[ix] * (1-rv_decay)
 				+ rev->flt[stage] * rv_decay;
