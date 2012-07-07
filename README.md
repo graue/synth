@@ -113,6 +113,7 @@ of samples in and out won't be equal.
 
 * mix: sum waves
 * mul: multiply waves
+* pmix: sum the output of commands
 
 ### Utilities [other kinds of input and output]:
 
