@@ -6,8 +6,8 @@ input on stdin and produce output on stdout. They all deal with raw
 above 1.0 and not clip.
 
 Eventually, the goal is/was to replace all of this with the more modular
-[Truesynth project](https://github.com/graue/synth), but I continue to
-use these programs, so why not release them to the world.
+[Truesynth project](https://github.com/graue/truesynth), but I continue
+to use these programs, so why not release them to the world.
 
 
 
