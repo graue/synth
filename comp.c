@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (isinff(ratio) || isnanf(ratio) || ratio <= 0.0f)
+	if (!isfinite(ratio) || ratio <= 0.0f)
 	{
 		fprintf(stderr, "comp: ratio must be positive\n");
 		exit(EXIT_FAILURE);

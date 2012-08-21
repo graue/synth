@@ -32,7 +32,7 @@ static void fix(void)
 
 	while (fread(&f, sizeof f, 1, stdin) == 1)
 	{
-		if (isinff(f) || isnanf(f))
+		if (!isfinite(f))
 			f = 0.0f;
 		if (fwrite(&f, sizeof f, 1, stdout) < 1)
 			return;
