@@ -39,10 +39,15 @@ get from hard clipping.
 
 ## Installing
 
-You can build each program with the provided `build` script.  Type
-`./build *.c` to make them all. To put the binaries in a separate
-directory, you can do something like `mkdir bin` and `cd bin` and
-`../build ../*.c`.
+You can build each program with the provided `build` script. To build
+them all, use it like this:
+
+    $ mkdir bin
+    $ cd bin
+    $ ../build ../*.c
+
+This cleanly puts all binaries in the bin/ directory. You can also
+build a single one with `./build programname`.
 
 ### Endianness note
 
