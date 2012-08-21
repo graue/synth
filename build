@@ -1,5 +1,5 @@
 #!/bin/sh
 for i
   do i=`dirname $i`/`basename $i .c`
-  gcc -D__USE_BSD $i.c -o `basename $i` -W -Wall -O3 -fexpensive-optimizations -ansi -lm -s
+  gcc $i.c -o `basename $i` -W -Wall -O3 -fexpensive-optimizations -std=c99 -lm -s
 done
