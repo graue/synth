@@ -60,7 +60,7 @@ floats), and you may have to change them to do what you want.
 ## Usage
 
 To find out what options a program takes, run it with the `-help`
-option. All programs assume 44100 KHz sample rate by default, which you
+option. All programs assume 44100 Hz sample rate by default, which you
 can override by setting the `RATE` or `SR` environment variable; for
 example, type `export RATE=48000` in the shell before running these
 programs.
