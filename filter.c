@@ -13,8 +13,6 @@
  * there.
  */
 
-#define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
-
 typedef struct
 {
 	float b0, b1, b2;

@@ -10,7 +10,6 @@
 #define ATTACK  (RATE * 10/1000)
 #define RELEASE (RATE * 30/1000)
 
-#define CLAMP(min, n, max) ((n)<(min)?(min):((n)>(max)?(max):(n)))
 #define MIN(x, y) ((x)<(y)?(x):(y))
 static void limit(float max);
 
