@@ -6,6 +6,7 @@
 #include "rate.inc"
 
 /* rossler: a rossler oscillator */
+/* Based on an example by Russell Borogove / www.tinygod.com */
 
 static void rossler(float freq, float amp, float len_ms, int mono);
 
