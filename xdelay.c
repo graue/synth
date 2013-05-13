@@ -6,13 +6,14 @@
 
 /* xdelay.c: cross-delay */
 
-static void xdelay(int leftlen, int rightlen, float feedback, float wetout);
+static void xdelay(int leftlen, int rightlen, float feedback, float wetout,
+	float dryout);
 
 int main(int argc, char *argv[])
 {
 	float leftlen = 50.0f, rightlen = 60.0f;
 	float feedback = 37.5f;
-	float wetout = 100.0f;
+	float wetout = 100.0f, dryout = 100.0f;
 	int leftlen_smp, rightlen_smp;
 	int i;
 
@@ -28,10 +29,13 @@ int main(int argc, char *argv[])
 			feedback = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-wetout") && i+1 < argc)
 			wetout = atof(argv[++i]);
+		else if (!strcmp(argv[i], "-dryout") && i+1 < argc)
+			dryout = atof(argv[++i]);
 		else if (!strcmp(argv[i], "-help"))
 		{
 			fprintf(stderr, "options: -leftlen ms, -rightlen ms, "
-				"-feedback percent, -wetout percent\n");
+				"-feedback percent, -wetout percent, "
+				"-dryout percent\n");
 			exit(0);
 		}
 	}
@@ -47,12 +51,12 @@ int main(int argc, char *argv[])
 		rightlen_smp = 1;
 
 	SET_BINARY_MODE
-	xdelay(leftlen_smp, rightlen_smp, feedback, wetout);
+	xdelay(leftlen_smp, rightlen_smp, feedback, wetout, dryout);
 	return 0;
 }
 
 static void xdelay(int leftlen_smp, int rightlen_smp,
-	float feedback, float wetout)
+	float feedback, float wetout, float dryout)
 {
 	float *buf[2];
 	float f[2], f0[2];
@@ -63,6 +67,7 @@ static void xdelay(int leftlen_smp, int rightlen_smp,
 	/* convert percentages to ratios */
 	feedback /= 100.0f;
 	wetout /= 100.0f;
+	dryout /= 100.0f;
 
 	for (i = 0; i < 2; i++)
 	{
@@ -80,7 +85,7 @@ static void xdelay(int leftlen_smp, int rightlen_smp,
 	{
 		for (i = 0; i < 2; i++)
 		{
-			f[i] = f0[i] + wetout*buf[i][bufpos[i]];
+			f[i] = dryout*f0[i] + wetout*buf[i][bufpos[i]];
 
 			buf[i][bufpos[i]] = feedback*buf[i][bufpos[i]] + f0[i];
 			if (++bufpos[i] == len[i])
