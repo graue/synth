@@ -8,7 +8,7 @@
 /* comp.c: compressor */
 
 static void compress(float threshdB, float ratio, float attack, float release,
-	int rms, float rmswindow);
+	int rms, float rmswindow, int upward);
 static float str_to_ratio(const char *s);
 
 int main(int argc, char *argv[])
@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
 	float attack = 10.0f;
 	float release = 100.0f;
 	float rmswindow = 5.0f; /* in milliseconds */
+	int upward = 0;
 	int rms = 0;
 	int i;
 
@@ -37,11 +38,13 @@ int main(int argc, char *argv[])
 			rms = 1;
 		else if (strcmp(argv[i], "-rmswindow") == 0 && i+1 < argc)
 			rmswindow = atof(argv[++i]);
+		else if (strcmp(argv[i], "-upward") == 0)
+			upward = 1;
 		else if (strcmp(argv[i], "-help") == 0)
 		{
 			fprintf(stderr, "options: -threshdB dB, "
 				"-ratio ratio, -attack ms, -release ms, "
-				"-rms, -rmswindow ms\n");
+				"-rms, -rmswindow ms, -upward\n");
 			exit(0);
 		}
 	}
@@ -53,7 +56,7 @@ int main(int argc, char *argv[])
 	}
 
 	SET_BINARY_MODE
-	compress(threshdB, ratio, attack, release, rms, rmswindow);
+	compress(threshdB, ratio, attack, release, rms, rmswindow, upward);
 	return 0;
 }
 
@@ -78,7 +81,7 @@ static float attrelenv_run(float attcoef, float relcoef, float in, float state)
 #define DBTORAT(x) exp((x) * M_LN10_OVER_20)
 
 static void compress(float threshdB, float ratio, float attack, float release,
-	int rms, float rmswindow)
+	int rms, float rmswindow, int upward)
 {
 	float f[2];
 	float envdB = DC_OFFSET;
@@ -121,7 +124,11 @@ static void compress(float threshdB, float ratio, float attack, float release,
 		link += DC_OFFSET; /* to avoid log(0) */
 		linkdB = RATTODB(link);
 		overdB = linkdB - threshdB;
-		if (overdB < 0.0f) overdB = 0.0f;
+		if (upward) {
+			if (overdB > 0.0f) overdB = 0.0f;
+		} else {
+			if (overdB < 0.0f) overdB = 0.0f;
+		}
 
 		overdB += DC_OFFSET; /* avoid denormal */
 		envdB = attrelenv_run(attcoef, relcoef, overdB, envdB);
