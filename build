@@ -1,5 +1,6 @@
 #!/bin/sh
 for i
   do i=`dirname $i`/`basename $i .c`
-  gcc $i.c -o `basename $i` -W -Wall -O3 -fexpensive-optimizations -std=c99 -lm -s
+  gcc $i.c -o `basename $i` -W -Wall -O3 -fexpensive-optimizations -lm -s \
+    || echo failed to compile $i
 done

@@ -1,4 +1,3 @@
-#define _BSD_SOURCE /* get popen, pclose on Linux */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
