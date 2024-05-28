@@ -5,7 +5,7 @@
 #include <time.h>
 #include "synth.h"
 #define MT_IMPLEMENT
-#include "mt.h"
+#include "lib/mt.h"
 #include "rate.inc"
 
 /* sampbins.c: randomized sample and hold effect */

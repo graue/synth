@@ -3,7 +3,7 @@
 #include <string.h>
 #include "synth.h"
 #define MT_IMPLEMENT
-#include "mt.h"
+#include "lib/mt.h"
 
 /* fmt: convert floats on stdin to their final format */
 
