@@ -93,6 +93,7 @@ of samples in and out won't be equal.
 * deriv: differentiates input
 * envelope: applies an envelope to input (can also be a generator with
   the -generate option)
+* fadef: add fade-ins or fade-outs
 * filter: IIR biquad filter (highpass, lowpass, bandpass & more)
 * foldback: foldback distortion
 * gate: a simple "gate"
